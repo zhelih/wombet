@@ -1,0 +1,3 @@
+(executable
+ (name wombet_server)
+ (libraries devkit unix))
