@@ -26,14 +26,14 @@ let answer _serv req k =
     let aorb = "a" == Arg.str "aorb" in
     Storage.call id aorb;
     k @@ (`Ok, [], "")
-(*
+
   | "/list" ->
+    let gameslist = Serialize.gamelist_to_json @@ Storage.games_list () in
+    k @@ (`Ok, [], gameslist)
     (* return games list *)
-*)
   | "/scoreboard" ->
-    let _scoreboard = Storage.scoreboard () in
-    (* TODO serialize nicely *)
-    k @@ (`Ok, [], "")
+    let scoreboard = Serialize.scoreboard_to_json @@ Storage.scoreboard () in
+    k @@ (`Ok, [], scoreboard)
   | "/edit" ->
     let user = Arg.str "user" in
     let score = Arg.float "score" in
