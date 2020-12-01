@@ -2,8 +2,8 @@ open Yojson.Basic.Util
 
 let scoreboard_to_json data =
   (* convert data as Array to list and add Yojson identifiers *)
-  let assoc = data |> Array.map (fun (name, score) -> name, `Float score) |> Array.to_list in
-  Yojson.Basic.to_string (`Assoc assoc)
+  let assoc = data |> Array.map (fun (name, score) -> `Assoc ["name", `String name; "score", `Float score ]) |> Array.to_list in
+  Yojson.Basic.to_string (`List assoc)
 
 let gamelist_to_json (games, coefs) =
   let open Common in
