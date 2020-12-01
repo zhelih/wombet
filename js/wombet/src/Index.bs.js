@@ -2,11 +2,9 @@
 
 var React = require("react");
 var ReactDom = require("react-dom");
+var Scoreboard$Wombet = require("./Scoreboard/Scoreboard.bs.js");
+var ServerStats$Wombet = require("./ServerStats/ServerStats.bs.js");
 var ExampleStyles$Wombet = require("./ExampleStyles.bs.js");
-var BlinkingGreeting$Wombet = require("./BlinkingGreeting/BlinkingGreeting.bs.js");
-var FetchedDogPictures$Wombet = require("./FetchedDogPictures/FetchedDogPictures.bs.js");
-var ReducerFromReactJSDocs$Wombet = require("./ReducerFromReactJSDocs/ReducerFromReactJSDocs.bs.js");
-var ReasonUsingJSUsingReason$Wombet = require("./ReasonUsingJSUsingReason/ReasonUsingJSUsingReason.bs.js");
 
 var style = document.createElement("style");
 
@@ -28,15 +26,9 @@ function makeContainer(text) {
   return content;
 }
 
-ReactDom.render(React.createElement(BlinkingGreeting$Wombet.make, {
-          children: "Hello!"
-        }), makeContainer("Blinking Greeting"));
+ReactDom.render(React.createElement(ServerStats$Wombet.make, {}), makeContainer("Fetch Wombet Server Stats"));
 
-ReactDom.render(React.createElement(ReducerFromReactJSDocs$Wombet.make, {}), makeContainer("Reducer From ReactJS Docs"));
-
-ReactDom.render(React.createElement(FetchedDogPictures$Wombet.make, {}), makeContainer("Fetched Dog Pictures"));
-
-ReactDom.render(React.createElement(ReasonUsingJSUsingReason$Wombet.make, {}), makeContainer("Reason Using JS Using Reason"));
+ReactDom.render(React.createElement(Scoreboard$Wombet.make, {}), makeContainer("Wombet Scoreboard"));
 
 exports.style = style;
 exports.makeContainer = makeContainer;
