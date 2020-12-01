@@ -1,4 +1,6 @@
 open Devkit
+open Prelude
+
 let answer _serv req k =
   let module Arg = Httpev.Args(struct let req = req end) in
   match req.Httpev_common.path with
@@ -45,5 +47,9 @@ let answer _serv req k =
 
 let () =
   let config = { Httpev.default with connection = Unix.ADDR_INET (Unix.inet_addr_loopback, 8000); name = "Wombet server" } in
+  begin try
+    ExtArg.parse Daemon.args;
+  with exn -> printfn "Error: %s" (Exn.str exn) end;
+  Daemon.manage (); (* daemonize *)
   Httpev.server config answer
 
