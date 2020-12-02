@@ -13,7 +13,7 @@ let answer _serv req k =
   | "/vote" ->
     let user = Arg.str "user" in
     let id = Arg.int "id" in
-    let aorb = "a" == Arg.str "aorb" in
+    let aorb = "a" = Arg.str "aorb" in
     Storage.vote id user aorb;
     k @@ (`Ok,[],"")
   | "/start" ->
@@ -23,7 +23,7 @@ let answer _serv req k =
   | "/call" ->
     (* id, a or b *)
     let id = Arg.int "id" in
-    let aorb = "a" == Arg.str "aorb" in
+    let aorb = "a" = Arg.str "aorb" in
     Storage.call id aorb;
     k @@ (`Ok, [], "")
 
