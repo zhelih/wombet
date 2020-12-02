@@ -1,4 +1,6 @@
 type progress = Allowed | NotAllowed | CalledA | CalledB
+[@@deriving show]
+
 type game =
 {
   id : int;
@@ -8,4 +10,3 @@ type game =
   state : progress;
   created: Devkit.Time.t;
 }
-

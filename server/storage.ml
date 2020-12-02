@@ -1,5 +1,7 @@
 open Common
 
+let log = Devkit.Log.from "storage"
+
 let s = Hashtbl.create 1 (* mem storage for games *)
 let v = Hashtbl.create 1 (* mem storage for votes *)
 let b = Hashtbl.create 1 (* mem storage for scoreboard *)
@@ -30,7 +32,7 @@ let record_start id =
   | Some game when game.state = Allowed ->
     let new_game = { game with state = NotAllowed } in
     Hashtbl.replace s id new_game
-  | _ -> assert false
+  | _ -> log #error "Failed to record start for game id %d" id
 
 let add_score user prize =
   match Hashtbl.find_opt b user with
@@ -50,7 +52,7 @@ let call (id:int) (aorb:bool) =
     let state = if aorb then CalledA else CalledB in
     let new_game = { game with state; } in
     Hashtbl.replace s id new_game
-  | _ -> assert false
+  | _ -> log #error "Failed to record call for game id %d" id
   end;
   (* convert all votes and update scoreboard *)
   match Hashtbl.find_opt v id with
@@ -87,6 +89,6 @@ let games_list () =
     let votes = Option.default [] @@ Hashtbl.find_opt v id in
     let voted_a = win_votes votes true in
     let voted_b = List.length votes - voted_a in
-    let get_coef a b = if b <> 0 then 1. +. (float a) /. (float b) else 0. in
+    let get_coef a b = if a <> 0 then 1. +. (float b) /. (float a) else 0. in
     (get_coef voted_a voted_b), (get_coef voted_b voted_a)
   )
