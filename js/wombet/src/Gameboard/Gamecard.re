@@ -43,7 +43,7 @@ let make = (~game, ~username) => {
 
   <div className="card">
     <div className="card-body">
-    <h5 className="card-title">{React.string(game##userA ++ " vs " ++ game##userB)}</h5>
+    <h5 className="card-title text-center">{React.string(game##userA ++ " vs " ++ game##userB)}</h5>
     {
     if (!Js.Null.test(game##url)) {
       <a href={Js.Null.getUnsafe(game##url)}>{React.string("Link")}</a>;
@@ -51,7 +51,7 @@ let make = (~game, ~username) => {
       <noscript />;
     }
     }
-    <h6 className="card-subtitle mb-2 text-muted">{React.string(game##cA ++ " : " ++ game##cB)}</h6>
+    <h6 className="card-subtitle mb-2 text-muted text-center">{React.string(game##cA ++ " : " ++ game##cB)}</h6>
     {
     switch (state) {
     | AllowedVoting =>
@@ -61,12 +61,12 @@ let make = (~game, ~username) => {
                 <button className="btn btn-primary btn-sm" onClick={_evt => call_api("/start?id=" ++ game##id, NotAllowedVoting, setState)}>{React.string("Close voting")}</button>
               </div>;
     | NotAllowedVoting => <div>
-                    <p className="text-info">{React.string("Betting closed")}</p>
+                    <p className="text-info text-center">{React.string("Betting closed")}</p>
                     <button className="btn btn-primary btn-sm" onClick={_evt => call_api("/call?aorb=a&id=" ++ game##id, CalledA, setState)}>{React.string("Call for left")}</button>
                     <button className="btn btn-primary btn-sm" onClick={_evt => call_api("/call?aorb=b&id=" ++ game##id, CalledB, setState)}>{React.string("Call for right")}</button>
                   </div>;
-    | CalledA => <p className="card-text text-info">{React.string("Won by " ++ game##userA)}</p>;
-    | CalledB => <p className="card-text text-info">{React.string("Won by " ++ game##userB)}</p>;
+    | CalledA => <p className="card-text text-info text-center">{React.string("Won by " ++ game##userA)}</p>;
+    | CalledB => <p className="card-text text-info text-center">{React.string("Won by " ++ game##userB)}</p>;
     | _ => <p className="text-danger">{React.string("Unexpected error")}</p>;
     }
     }

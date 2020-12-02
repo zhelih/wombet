@@ -51,19 +51,14 @@ function Gameboard(Props) {
     }
   } else {
     tmp = Belt_Array.mapWithIndex(state._0, (function (i, game) {
-            return React.createElement("div", undefined, React.createElement(Gamecard$Wombet.make, {
-                            game: game,
-                            username: "testuser"
-                          }));
+            return React.createElement(Gamecard$Wombet.make, {
+                        game: game,
+                        username: "testuser"
+                      });
           }));
   }
   return React.createElement("div", {
-              style: {
-                display: "flex",
-                height: "120px",
-                alignItems: "center",
-                justifyContent: "center"
-              }
+              className: "card-deck mb-3"
             }, tmp);
 }
 

@@ -67,7 +67,7 @@ function Gamecard(Props) {
         break;
     case /* NotAllowedVoting */1 :
         tmp = React.createElement("div", undefined, React.createElement("p", {
-                  className: "text-info"
+                  className: "text-info text-center"
                 }, "Betting closed"), React.createElement("button", {
                   className: "btn btn-primary btn-sm",
                   onClick: (function (_evt) {
@@ -82,12 +82,12 @@ function Gamecard(Props) {
         break;
     case /* CalledA */2 :
         tmp = React.createElement("p", {
-              className: "card-text text-info"
+              className: "card-text text-info text-center"
             }, "Won by " + game.userA);
         break;
     case /* CalledB */3 :
         tmp = React.createElement("p", {
-              className: "card-text text-info"
+              className: "card-text text-info text-center"
             }, "Won by " + game.userB);
         break;
     case /* Unknown */4 :
@@ -102,11 +102,11 @@ function Gamecard(Props) {
             }, React.createElement("div", {
                   className: "card-body"
                 }, React.createElement("h5", {
-                      className: "card-title"
+                      className: "card-title text-center"
                     }, game.userA + (" vs " + game.userB)), Js_null.test(game.url) ? React.createElement("noscript", undefined) : React.createElement("a", {
                         href: game.url
                       }, "Link"), React.createElement("h6", {
-                      className: "card-subtitle mb-2 text-muted"
+                      className: "card-subtitle mb-2 text-muted text-center"
                     }, game.cA + (" : " + game.cB)), tmp));
 }
 

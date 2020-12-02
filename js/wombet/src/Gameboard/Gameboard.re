@@ -31,15 +31,7 @@ let make = () => {
 
     None;
   });
-
-  <div
-    style={ReactDOMRe.Style.make(
-      ~height="120px",
-      ~display="flex",
-      ~alignItems="center",
-      ~justifyContent="center",
-      (),
-    )}>
+  <div className="card-deck mb-3">
     {switch (state) {
     | ErrorLoading => React.string("Error while loading a gameboard!")
     | Loading => React.string("Loading Gameboard...")
@@ -49,36 +41,7 @@ let make = () => {
       ->Belt.Array.mapWithIndex((i, game) => {
         // FIXME UGLY just converting types, any better way using BS?
         let row = Obj.magic(game);
-        <div>
-//        <div>
-//        {React.string(row##userA ++ " vs " ++ row##userB)}
-//        </div>
-//        {
-//        if (row##url) {
-//            <a href={row##url}>{React.string("Link")}</a>
-//        } else {
-//          <noscript />;
-//        };
-//        }
-//        <div>{React.string(row##cA ++ " : " ++ row##cB)}</div>
-//        {
-//        switch (row##state) {
-//        | "all" => <div><button>{React.string("Vote left")}</button>
-//                   <button>{React.string("Vote right")}</button>
-//                   <button>{React.string("Close voting")}</button>
-//                   </div>
-//        | "notall" => <div>
-//                        <p>{React.string("Betting closed")}</p>
-//                        <button>{React.string("Call for left")}</button>
-//                        <button>{React.string("Call for right")}</button>
-//                      </div>;
-//        | "awon" => <p>{React.string("Won by " ++ row##userA)}</p>;
-//        | "bwon" => <p>{React.string("Won by " ++ row##userB)}</p>;
-//        | _ => <noscript />; // supress
-//        };
-//        }
         <Gamecard game=row username="testuser" />
-        </div>
         })
       ->React.array
     }}
