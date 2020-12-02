@@ -41,33 +41,35 @@ let make = (~game, ~username) => {
 //    None;
 //  });
 
-  <div>
-    <div>
-    {React.string(game##userA ++ " vs " ++ game##userB)}
-    </div>
+  <div className="card">
+    <div className="card-body">
+    <h5 className="card-title">{React.string(game##userA ++ " vs " ++ game##userB)}</h5>
     {
-    if (game##url == Js.null) {
+    if (!Js.Null.test(game##url)) {
       <a href={Js.Null.getUnsafe(game##url)}>{React.string("Link")}</a>;
     } else {
       <noscript />;
-    };
     }
-    <div>{React.string(game##cA ++ " : " ++ game##cB)}</div>
+    }
+    <h6 className="card-subtitle mb-2 text-muted">{React.string(game##cA ++ " : " ++ game##cB)}</h6>
     {
     switch (state) {
-    | AllowedVoting => <div><button onClick={_evt => call_api("/vote?aorb=a&id=" ++ game##id ++ "&user=" ++ username, NotAllowedVoting, setState)}>{React.string("Vote left")}</button>
-               <button onClick={_evt => call_api("/vote?aorb=b&id=" ++ game##id ++ "&user=" ++ username, NotAllowedVoting, setState)}>{React.string("Vote right")}</button>
-               <button onClick={_evt => call_api("/start?id=" ++ game##id, NotAllowedVoting, setState)}>{React.string("Close voting")}</button>
-               </div>
+    | AllowedVoting =>
+              <div className="btn-group btn-group-sm" role="group" ariaLabel="Voting">
+                <button className="btn btn-primary btn-sm" onClick={_evt => call_api("/vote?aorb=a&id=" ++ game##id ++ "&user=" ++ username, NotAllowedVoting, setState)}>{React.string("Vote left")}</button>
+                <button className="btn btn-primary btn-sm" onClick={_evt => call_api("/vote?aorb=b&id=" ++ game##id ++ "&user=" ++ username, NotAllowedVoting, setState)}>{React.string("Vote right")}</button>
+                <button className="btn btn-primary btn-sm" onClick={_evt => call_api("/start?id=" ++ game##id, NotAllowedVoting, setState)}>{React.string("Close voting")}</button>
+              </div>;
     | NotAllowedVoting => <div>
-                    <p>{React.string("Betting closed")}</p>
-                    <button onClick={_evt => call_api("/call?aorb=a&id=" ++ game##id, CalledA, setState)}>{React.string("Call for left")}</button>
-                    <button onClick={_evt => call_api("/call?aorb=b&id=" ++ game##id, CalledB, setState)}>{React.string("Call for right")}</button>
+                    <p className="text-info">{React.string("Betting closed")}</p>
+                    <button className="btn btn-primary btn-sm" onClick={_evt => call_api("/call?aorb=a&id=" ++ game##id, CalledA, setState)}>{React.string("Call for left")}</button>
+                    <button className="btn btn-primary btn-sm" onClick={_evt => call_api("/call?aorb=b&id=" ++ game##id, CalledB, setState)}>{React.string("Call for right")}</button>
                   </div>;
-    | CalledA => <p>{React.string("Won by " ++ game##userA)}</p>;
-    | CalledB => <p>{React.string("Won by " ++ game##userB)}</p>;
-    | _ => <p>{React.string("Unexpected error")}</p>;
-    };
+    | CalledA => <p className="card-text text-info">{React.string("Won by " ++ game##userA)}</p>;
+    | CalledB => <p className="card-text text-info">{React.string("Won by " ++ game##userB)}</p>;
+    | _ => <p className="text-danger">{React.string("Unexpected error")}</p>;
     }
+    }
+    </div>
   </div>;
 };

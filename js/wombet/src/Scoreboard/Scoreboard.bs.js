@@ -49,9 +49,9 @@ function Scoreboard(Props) {
       
     }
   } else {
-    tmp = Belt_Array.mapWithIndex(state._0, (function (i, row) {
-            return React.createElement("tr", undefined, React.createElement("td", undefined, i + 1 | 0), React.createElement("td", undefined, row.name), React.createElement("td", undefined, row.score));
-          }));
+    tmp = React.createElement("table", undefined, React.createElement("th", undefined, "Wombet Scoreboard"), Belt_Array.mapWithIndex(state._0, (function (i, row) {
+                return React.createElement("tr", undefined, React.createElement("td", undefined, i + 1 | 0), React.createElement("td", undefined, row.name), React.createElement("td", undefined, row.score));
+              })));
   }
   return React.createElement("div", {
               style: {
@@ -60,7 +60,7 @@ function Scoreboard(Props) {
                 alignItems: "center",
                 justifyContent: "center"
               }
-            }, React.createElement("table", undefined, React.createElement("th", undefined, "Wombet Scoreboard"), tmp));
+            }, tmp);
 }
 
 var make = Scoreboard;

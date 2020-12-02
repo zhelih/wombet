@@ -2,6 +2,7 @@
 
 var Curry = require("bs-platform/lib/js/curry.js");
 var React = require("react");
+var Js_null = require("bs-platform/lib/js/js_null.js");
 
 function state_of_string(p) {
   switch (p) {
@@ -43,45 +44,70 @@ function Gamecard(Props) {
   var tmp;
   switch (match[0]) {
     case /* AllowedVoting */0 :
-        tmp = React.createElement("div", undefined, React.createElement("button", {
+        tmp = React.createElement("div", {
+              "aria-label": "Voting",
+              className: "btn-group btn-group-sm",
+              role: "group"
+            }, React.createElement("button", {
+                  className: "btn btn-primary btn-sm",
                   onClick: (function (_evt) {
                       return call_api("/vote?aorb=a&id=" + (game.id + ("&user=" + username)), /* NotAllowedVoting */1, setState);
                     })
                 }, "Vote left"), React.createElement("button", {
+                  className: "btn btn-primary btn-sm",
                   onClick: (function (_evt) {
                       return call_api("/vote?aorb=b&id=" + (game.id + ("&user=" + username)), /* NotAllowedVoting */1, setState);
                     })
                 }, "Vote right"), React.createElement("button", {
+                  className: "btn btn-primary btn-sm",
                   onClick: (function (_evt) {
                       return call_api("/start?id=" + game.id, /* NotAllowedVoting */1, setState);
                     })
                 }, "Close voting"));
         break;
     case /* NotAllowedVoting */1 :
-        tmp = React.createElement("div", undefined, React.createElement("p", undefined, "Betting closed"), React.createElement("button", {
+        tmp = React.createElement("div", undefined, React.createElement("p", {
+                  className: "text-info"
+                }, "Betting closed"), React.createElement("button", {
+                  className: "btn btn-primary btn-sm",
                   onClick: (function (_evt) {
                       return call_api("/call?aorb=a&id=" + game.id, /* CalledA */2, setState);
                     })
                 }, "Call for left"), React.createElement("button", {
+                  className: "btn btn-primary btn-sm",
                   onClick: (function (_evt) {
                       return call_api("/call?aorb=b&id=" + game.id, /* CalledB */3, setState);
                     })
                 }, "Call for right"));
         break;
     case /* CalledA */2 :
-        tmp = React.createElement("p", undefined, "Won by " + game.userA);
+        tmp = React.createElement("p", {
+              className: "card-text text-info"
+            }, "Won by " + game.userA);
         break;
     case /* CalledB */3 :
-        tmp = React.createElement("p", undefined, "Won by " + game.userB);
+        tmp = React.createElement("p", {
+              className: "card-text text-info"
+            }, "Won by " + game.userB);
         break;
     case /* Unknown */4 :
-        tmp = React.createElement("p", undefined, "Unexpected error");
+        tmp = React.createElement("p", {
+              className: "text-danger"
+            }, "Unexpected error");
         break;
     
   }
-  return React.createElement("div", undefined, React.createElement("div", undefined, game.userA + (" vs " + game.userB)), game.url === null ? React.createElement("a", {
-                    href: game.url
-                  }, "Link") : React.createElement("noscript", undefined), React.createElement("div", undefined, game.cA + (" : " + game.cB)), tmp);
+  return React.createElement("div", {
+              className: "card"
+            }, React.createElement("div", {
+                  className: "card-body"
+                }, React.createElement("h5", {
+                      className: "card-title"
+                    }, game.userA + (" vs " + game.userB)), Js_null.test(game.url) ? React.createElement("noscript", undefined) : React.createElement("a", {
+                        href: game.url
+                      }, "Link"), React.createElement("h6", {
+                      className: "card-subtitle mb-2 text-muted"
+                    }, game.cA + (" : " + game.cB)), tmp));
 }
 
 var make = Gamecard;

@@ -40,12 +40,13 @@ let make = () => {
       ~justifyContent="center",
       (),
     )}>
-    <table><th>{React.string("Wombet Scoreboard")}</th>
     {switch (state) {
     | ErrorLoading => React.string("Error while loading a scoreboard!")
     | Loading => React.string("Loading Scoreboard...")
     | EmptyScoreboard => React.string("Scoreboard Empty")
-    | LoadedScoreboard(users) =>
+    | LoadedScoreboard(users) => {
+      <table><th>{React.string("Wombet Scoreboard")}</th>
+      {
       users
       ->Belt.Array.mapWithIndex((i, row) => {
         // FIXME UGLY just converting types, any better way using BS?
@@ -53,7 +54,9 @@ let make = () => {
         <tr><td>{React.int(i+1)}</td><td>{React.string(row_object##name)}</td><td>{React.float(row_object##score)}</td></tr>
         })
       ->React.array
+      }
+      </table>
+    }
     }}
-  </table>
   </div>;
 };
