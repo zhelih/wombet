@@ -58,3 +58,7 @@ ReactDOMRe.render(
   <Scoreboard />,
   makeContainer("Wombet Scoreboard"),
 );
+ReactDOMRe.render(
+  <Gameboard />,
+  makeContainer("Wombet Games"),
+);

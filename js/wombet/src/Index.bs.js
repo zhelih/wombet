@@ -2,6 +2,7 @@
 
 var React = require("react");
 var ReactDom = require("react-dom");
+var Gameboard$Wombet = require("./Gameboard/Gameboard.bs.js");
 var Scoreboard$Wombet = require("./Scoreboard/Scoreboard.bs.js");
 var ServerStats$Wombet = require("./ServerStats/ServerStats.bs.js");
 var ExampleStyles$Wombet = require("./ExampleStyles.bs.js");
@@ -29,6 +30,8 @@ function makeContainer(text) {
 ReactDom.render(React.createElement(ServerStats$Wombet.make, {}), makeContainer("Fetch Wombet Server Stats"));
 
 ReactDom.render(React.createElement(Scoreboard$Wombet.make, {}), makeContainer("Wombet Scoreboard"));
+
+ReactDom.render(React.createElement(Gameboard$Wombet.make, {}), makeContainer("Wombet Games"));
 
 exports.style = style;
 exports.makeContainer = makeContainer;
