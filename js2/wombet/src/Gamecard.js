@@ -105,6 +105,7 @@ class Gamecard extends React.Component {
     	  <Accordion.Toggle as={Button} variant="link" eventKey={this.props.gameid+1}>
           {header}
 	      </Accordion.Toggle>
+        {game && game.url ? <a className="text-right" href={game.url} target='blank_'>Link</a> : <noscript />}
   	  </Card.Header>
     	<Accordion.Collapse eventKey={this.props.gameid+1}>
       	<Card.Body>{body}</Card.Body>
