@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Gamecard from './Gamecard';
+import Button from 'react-bootstrap/Button';
 // bootstrap imports
 import Accordion from 'react-bootstrap/Accordion';
 const API="https://wp.lykhovyd.com/api";
@@ -40,6 +41,7 @@ class Gameboard extends React.Component {
     return (
 			<div>
 			<h1>Wombet Gameboard</h1>
+			<Button>New Game</Button>
 			<Accordion>
 			{games_items}
 			</Accordion>
