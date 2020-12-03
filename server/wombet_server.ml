@@ -26,7 +26,10 @@ let answer _serv req k =
     let aorb = "a" = Arg.str "aorb" in
     Storage.call id aorb;
     k @@ (`Ok, [], "")
-
+  | "/game" ->
+    let id = Arg.int "id" in
+    let game = Serialize.game_to_json @@ Storage.game id in
+    k @@ (`Ok, [], game)
   | "/list" ->
     let gameslist = Serialize.gamelist_to_json @@ Storage.games_list () in
     k @@ (`Ok, [], gameslist)

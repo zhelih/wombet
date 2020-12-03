@@ -76,6 +76,21 @@ let edit_score user score =
 let str_stats () =
   Printf.sprintf "games: %d, outstanding votes: %d, scoreboard size: %d" (Hashtbl.length s) (Hashtbl.length v) (Hashtbl.length b)
 
+let get_game_coefs game =
+  let id = game.id in
+  (*FIXME what about Option.value? *)
+  let votes = Option.default [] @@ Hashtbl.find_opt v id in
+  let voted_a = win_votes votes true in
+  let voted_b = List.length votes - voted_a in
+  let get_coef a b = if a <> 0 then 1. +. (float b) /. (float a) else 0. in
+  (get_coef voted_a voted_b), (get_coef voted_b voted_a)
+
+let game id =
+  match Hashtbl.find_opt s id with
+  | None -> raise (Invalid_argument ("Bad game id " ^ (string_of_int id)))
+  | Some game ->
+    game, (get_game_coefs game)
+
 (* return the list of games together with coefficients, sort by creation date *)
 (*TODO impose a limit? *)
 let games_list () =
@@ -83,12 +98,5 @@ let games_list () =
   Array.sort (fun (_,g1) (_,g2) -> -compare g1.created g2.created) games;
   (* compute current coefs *)
   games, Array.init (Array.length games) (fun ind ->
-    let game = snd games.(ind) in
-    let id = game.id in
-    (*FIXME what about Option.value? *)
-    let votes = Option.default [] @@ Hashtbl.find_opt v id in
-    let voted_a = win_votes votes true in
-    let voted_b = List.length votes - voted_a in
-    let get_coef a b = if a <> 0 then 1. +. (float b) /. (float a) else 0. in
-    (get_coef voted_a voted_b), (get_coef voted_b voted_a)
+    get_game_coefs @@ snd games.(ind)
   )
