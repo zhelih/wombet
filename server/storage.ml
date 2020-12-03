@@ -82,7 +82,7 @@ let get_game_coefs game =
   let votes = Option.default [] @@ Hashtbl.find_opt v id in
   let voted_a = win_votes votes true in
   let voted_b = List.length votes - voted_a in
-  let get_coef a b = if a <> 0 then 1. +. (float b) /. (float a) else 0. in
+  let get_coef a b = if b <> 0 then 1. +. (float a) /. (float b) else 0. in
   (get_coef voted_a voted_b), (get_coef voted_b voted_a)
 
 let game id =
