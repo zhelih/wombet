@@ -10,6 +10,7 @@ class Gamecard extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = { needsUpdate: true, isLoading: false, game:null, error: null } ;
+    this.props.prevUsername = this.props.username;
     this.handleClick = this.handleClick.bind(this);
     this.updateGameData = this.updateGameData.bind(this);
 	}
@@ -19,7 +20,8 @@ class Gamecard extends React.Component {
   }
 
   componentDidUpdate() {
-    if (this.state.needsUpdate) {
+    if (this.state.needsUpdate || (this.props.username && this.props.prevUserName !== this.props.username)) {
+      this.props.prevUserName = this.props.username;
       this.updateGameData()
     }
   }
@@ -27,7 +29,11 @@ class Gamecard extends React.Component {
   updateGameData() {
 		this.setState({ isLoading: true, needsUpdate: false });
 
-		fetch(API+'/game?id='+this.props.gameid)
+    let query=API+'/game?id='+this.props.gameid;
+    if (this.props.username) {
+      query = query + '&user=' + this.props.username;
+    }
+		fetch(query)
 		.then(response => {
 		  if (response.ok) {
 				return response.json();
