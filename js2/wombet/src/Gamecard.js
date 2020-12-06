@@ -4,8 +4,7 @@ import Accordion from 'react-bootstrap/Accordion';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
-
-const API="https://wp.lykhovyd.com/api";
+import API from './Api';
 
 class Gamecard extends React.Component {
 	constructor(props) {

@@ -3,7 +3,7 @@ import Gamecard from './Gamecard';
 import Button from 'react-bootstrap/Button';
 // bootstrap imports
 import Accordion from 'react-bootstrap/Accordion';
-const API="https://wp.lykhovyd.com/api";
+import API from './Api';
 
 class Gameboard extends React.Component {
 	constructor(props) {
