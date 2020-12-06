@@ -38,7 +38,7 @@ class Gameboard extends React.Component {
     if (games) {
       if (games.length > 0) {
 				const games_items = games.map(game =>
-					<Gamecard gameid={game.id} username='testuser'/>
+					<Gamecard gameid={game.id} username={this.props.username}/>
 				);
 				gameboard_body = <Accordion>
 						{games_items}

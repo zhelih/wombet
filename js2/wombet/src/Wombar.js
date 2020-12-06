@@ -26,13 +26,12 @@ class Wombar extends React.Component {
     //const form = event.currentTarget;
     event.preventDefault(); // do not reload the page?
     event.stopPropagation();
-    console.log('User:');
-    console.log(this.state.user);
     if (this.state.user && this.state.user.length > 0)
     {
       const { cookies } = this.props;
       cookies.set(COOKIEUSER, this.state.user);
       this.setState ({ isLoggedIn : true });
+      this.props.updateusername(this.state.user); //update App username
     }
   }
 

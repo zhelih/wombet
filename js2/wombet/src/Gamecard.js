@@ -40,6 +40,7 @@ class Gamecard extends React.Component {
 	}
 
   handleClick(req) {
+    if(this.props.username) {
     fetch(API+req+'id='+this.state.game.id+'&user='+this.props.username)
     .then(response => {
       if(response.ok) {
@@ -50,6 +51,9 @@ class Gamecard extends React.Component {
       }
     })
     .catch(error => this.setState({error, isLoading: false}));
+    } else {
+      //TODO alert to log in
+    }
   }
   render() {
 		const { isLoading, game, error } = this.state;
@@ -69,8 +73,8 @@ class Gamecard extends React.Component {
           // allowed voting
           textcn='text-primary';
           body = <ButtonGroup>
-            <Button variant="primary" onClick={() => this.handleClick('/vote?aorb=a&')}>Vote left</Button>
-            <Button variant="primary" onClick={() => this.handleClick('/vote?aorb=b&')}>Vote right</Button>
+            <Button variant="primary" disabled={!this.props.username} onClick={() => this.handleClick('/vote?aorb=a&')}>Vote left</Button>
+            <Button variant="primary" disabled={!this.props.username} onClick={() => this.handleClick('/vote?aorb=b&')}>Vote right</Button>
             <Button variant="warning" onClick={() => this.handleClick('/start?')}>Close bets</Button>
           </ButtonGroup>;
         } else if (game.state === "notall") {
@@ -107,7 +111,10 @@ class Gamecard extends React.Component {
         {game && game.url ? <a className="text-right" href={game.url} target='blank_'>Link</a> : <noscript />}
   	  </Card.Header>
     	<Accordion.Collapse eventKey={this.props.gameid+1}>
-      	<Card.Body>{body}</Card.Body>
+      	<Card.Body>
+        <p>Debug: current user is {this.props.username}.</p><br/>
+        {body}
+        </Card.Body>
 	    </Accordion.Collapse>
   	</Card>
 	);

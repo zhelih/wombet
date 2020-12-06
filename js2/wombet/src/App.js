@@ -7,15 +7,25 @@ import Wombar from './Wombar';
 import { CookiesProvider } from 'react-cookie';
 
 class App extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {username: null} ;
+    this.stateHandler = this.stateHandler.bind(this);
+	}
+
+  stateHandler(u) {
+    this.setState({username: u});
+  }
+
   render() {
     return (
     <Router basename="/wombet">
      <CookiesProvider>
-      <Wombar />
+      <Wombar updateusername={this.stateHandler}/>
      </CookiesProvider>
       <Switch>
         <Route exact path="/">
-          <Gameboard />
+          <Gameboard username={this.state.username} />
         </Route>
         <Route path="/scoreboard">
           <Scoreboard />
