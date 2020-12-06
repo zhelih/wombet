@@ -11,7 +11,7 @@ Server start options:
 
 Server queries:
   * /add
-    * params: players, tm, <url>
+    * params: players, <tm>, <url>
     * return: game id TEXT
     * action: add game with players, tournament, and URL
   * /vote
