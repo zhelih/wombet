@@ -40,8 +40,7 @@ class Gameboard extends React.Component {
 
     return (
 			<div>
-			<h1>Wombet Gameboard</h1>
-			<Button>New Game</Button>
+			<h2>Wombet Gameboard</h2>
 			<Accordion>
 			{games_items}
 			</Accordion>
