@@ -1,5 +1,5 @@
 (executable
  (name wombet_server)
  (libraries devkit unix yojson)
- (preprocess (pps ppx_deriving.show))
+ (preprocess (pps ppx_deriving.show ppx_deriving_yojson))
  )

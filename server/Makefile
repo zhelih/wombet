@@ -8,4 +8,4 @@ clean:
 	dune clean
 
 deps:
-	opam install dune devkit yojson ppx_deriving
+	opam install dune devkit yojson ppx_deriving ppx_deriving_yojson
