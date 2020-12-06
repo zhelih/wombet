@@ -53,8 +53,8 @@ let answer _ req =
 
 
 let () =
+  let access_log = ref (open_out "wombet.log") in
   ExtArg.parse Daemon.args;
   Daemon.manage (); (* daemonize *)
-  let access_log = ref (open_out "wombet.log") in
   let config = { Httpev.default with connection = Unix.ADDR_INET (Unix.inet_addr_loopback, 8000); name = "Wombet server"; access_log; } in
   Httpev.server_lwt config answer
