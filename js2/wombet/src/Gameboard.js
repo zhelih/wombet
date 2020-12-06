@@ -34,16 +34,23 @@ class Gameboard extends React.Component {
 			return <p>Gameboard is loading...</p>;
 		}
 
-		const games_items = games.map(game =>
-			<Gamecard gameid={game.id} username='testuser'/>
-		);
+   let gameboard_body = <p>No games yet.</p>
+    if (games) {
+      if (games.length > 0) {
+				const games_items = games.map(game =>
+					<Gamecard gameid={game.id} username='testuser'/>
+				);
+				gameboard_body = <Accordion>
+						{games_items}
+						</Accordion>;
+			}
+		}
+
 
     return (
 			<div>
 			<h2>Wombet Gameboard</h2>
-			<Accordion>
-			{games_items}
-			</Accordion>
+			{gameboard_body}
 			</div>
     );
   }
