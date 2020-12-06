@@ -8,7 +8,7 @@ export default function Wombar() {
   // use as NavLink with Nav.Link to work correctly with Router
   return (
     <Navbar bg="light" expand="lg">
-      <Navbar.Brand href="/">
+      <Navbar.Brand as={NavLink} to="/">
         <img src="./wombet_logo.png"
         width="30" height="30" className="d-inline-block align-top"
         alt="Wombet Logo"
