@@ -23,7 +23,7 @@ class AddGame extends React.Component {
     if (form.checkValidity() === true) {
       this.setState({ validated: true });
       // send API add game
-      let api_string = API+'/add?userA='+this.state.userA+'&userB='+this.state.userB;
+      let api_string = API+'/add?players[]='+this.state.userA+'&players[]='+this.state.userB;
       if (this.state.url) {
         api_string = api_string + '&url=' + encodeURIComponent(this.state.url);
       }

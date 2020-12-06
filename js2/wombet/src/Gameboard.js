@@ -14,7 +14,11 @@ class Gameboard extends React.Component {
 	componentDidMount() {
 		this.setState({ isLoading: true });
 
-		fetch(API+'/list')
+		let query = API + '/list';
+		if (this.props.username) {
+			query = query + '?user=' + this.props.username;
+		}
+		fetch(query)
 		.then(response => {
 		  if (response.ok) {
 				return response.json();
@@ -38,7 +42,7 @@ class Gameboard extends React.Component {
     if (games) {
       if (games.length > 0) {
 				const games_items = games.map(game =>
-					<Gamecard gameid={game.id} username={this.props.username}/>
+					<Gamecard gameid={game.game.id} username={this.props.username}/>
 				);
 				gameboard_body = <Accordion>
 						{games_items}

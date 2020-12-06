@@ -47,7 +47,7 @@ class Gamecard extends React.Component {
 
   handleClick(req) {
     if(this.props.username) {
-    fetch(API+req+'id='+this.state.game.id+'&user='+this.props.username)
+    fetch(API+req+'id='+this.state.game.game.id+'&user='+this.props.username)
     .then(response => {
       if(response.ok) {
         // trigger repaint
@@ -73,36 +73,33 @@ class Gamecard extends React.Component {
       header = <p>Gamecard is loading...</p>;
     } else {
       if (game) {
-        let userA=game.userA;
-        let userB=game.userB;
-        if (game.state === "all") {
+        let userA=game.game.players[0];
+        let userB=game.game.players[1];
+        if (game.game.state[0] === "open") {
           // allowed voting
           textcn='text-primary';
           body = <ButtonGroup>
-            <Button variant="primary" disabled={!this.props.username} onClick={() => this.handleClick('/vote?aorb=a&')}>Vote left</Button>
-            <Button variant="primary" disabled={!this.props.username} onClick={() => this.handleClick('/vote?aorb=b&')}>Vote right</Button>
+            <Button variant="primary" disabled={!this.props.username} onClick={() => this.handleClick('/vote?player=0&')}>Vote left</Button>
+            <Button variant="primary" disabled={!this.props.username} onClick={() => this.handleClick('/vote?player=1&')}>Vote right</Button>
             <Button variant="warning" onClick={() => this.handleClick('/start?')}>Close bets</Button>
           </ButtonGroup>;
-        } else if (game.state === "notall") {
+        } else if (game.game.state[0] === "closed") {
           textcn='text-dark';
           body = <div>
                   <p className='text-info'>Bets are closed, awaiting the end.</p>
-                  <Button variant="success" onClick={() => this.handleClick('/call?aorb=a&')}>Call Left Win</Button>
-                  <Button variant="success" onClick={() => this.handleClick('/call?aorb=b&')}>Call Right Win</Button>
+                  <Button variant="success" onClick={() => this.handleClick('/call?player=0&')}>Call Left Win</Button>
+                  <Button variant="success" onClick={() => this.handleClick('/call?player=1&')}>Call Right Win</Button>
                 </div>;
-        } else if (game.state === "awon") {
+        } else if (game.game.state[0] === "called") {
           textcn='text-dark';
-          body = <p className="text-success">{game.userA} won the game.</p>;
-          userA = <span className='font-weight-bold'>{game.userA}</span>;
-        } else if (game.state === "bwon") {
-          textcn='text-dark';
-          body = <p className="text-success">{game.userB} won the game.</p>;
-          userB = <span className='font-weight-bold'>{game.userB}</span>;
+          body = <p className="text-success">{game.game.players[game.game.state[1]]} won the game.</p>;
+//          userA = <span className='font-weight-bold'>{game.userA}</span>;
+//        TODO bold
         } else {
           textcn='text-dark';
           body = <p className="text-danger">Error in parsing game state.</p>;
         }
-        header = <p><span className={textcn}>{userA} vs. {userB}</span><span className="text-secondary">{game.cA} : {game.cB}</span></p>;
+        header = <p><span className={textcn}>{userA} vs. {userB}</span><span className="text-secondary">todo tournament</span></p>;
       } else {
         header = <p>Empty</p>;
       }
@@ -114,7 +111,7 @@ class Gamecard extends React.Component {
     	  <Accordion.Toggle as={Button} variant="link" eventKey={this.props.gameid+1}>
           {header}
 	      </Accordion.Toggle>
-        {game && game.url ? <a className="text-right" href={game.url} target='blank_'>Link</a> : <noscript />}
+        {game && game.game.url ? <a className="text-right" href={game.game.url} target='blank_'>Link</a> : <noscript />}
   	  </Card.Header>
     	<Accordion.Collapse eventKey={this.props.gameid+1}>
       	<Card.Body>
