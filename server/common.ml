@@ -13,3 +13,7 @@ type game =
     [@to_yojson fun f -> `Float f];
   *)
 } [@@deriving yojson { exn = true }]
+
+type coefs = float * float [@@deriving yojson]
+
+type gamelist = (game * coefs) array [@@deriving yojson { exn = true } ]

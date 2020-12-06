@@ -31,7 +31,8 @@ let answer _ req =
     yojson @@ Serialize.game_to_json @@ Storage.game id
   | "/list" ->
     yojson @@ Serialize.gamelist_to_json @@ Storage.games_list ()
-    (* return games list *)
+  | "/v2/list" ->
+    yojson @@ Serialize.gamelist_to_json_v2 @@ Storage.games_list ()
   | "/scoreboard" ->
     yojson @@ Serialize.scoreboard_to_json @@ Storage.scoreboard ()
   | "/edit" ->

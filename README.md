@@ -34,6 +34,10 @@ Server queries:
     * params: none
     * return: game list JSON
     * action: get all games info
+  * /v2/list
+    * params: none
+    * return: game list JSON
+    * action: get all games info
   * /scoreboard
     * params: none
     * return: scoreboard JSON

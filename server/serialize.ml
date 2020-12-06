@@ -28,3 +28,6 @@ let gamelist_to_json (games, coefs) =
     game_to_json (game, (cA, cB))
   ) games coefs in
   `List (Array.to_list json_array)
+
+let gamelist_to_json_v2 (games,coefs) =
+  Array.map2 (fun (_,game) c -> game,c) games coefs |> Common.gamelist_to_yojson
