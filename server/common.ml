@@ -17,3 +17,10 @@ type game =
 type coefs = float * float [@@deriving yojson]
 
 type gamelist = (game * coefs) array [@@deriving yojson { exn = true } ]
+
+type score = {
+  name : string;
+  score : float;
+} [@@deriving yojson]
+
+type scoreboard = score array [@@deriving yojson { exn = true } ]
