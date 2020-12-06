@@ -11,7 +11,7 @@ let answer _ req =
     let url = Arg.get "url" in
     let tournament = Arg.get "tm" in
     if List.length players < 2 then begin
-      log #warn "not enough players for request: %s" (Httpev_common.show_request req);
+      log #warn "not enough players %d" (List.length players);
       not_found @@ "not enough players"
     end else begin
       let id = Storage.new_game players tournament url  in
@@ -53,7 +53,8 @@ let answer _ req =
 
 
 let () =
-  let config = { Httpev.default with connection = Unix.ADDR_INET (Unix.inet_addr_loopback, 8000); name = "Wombet server" } in
   ExtArg.parse Daemon.args;
   Daemon.manage (); (* daemonize *)
+  let access_log = ref (open_out "wombet.log") in
+  let config = { Httpev.default with connection = Unix.ADDR_INET (Unix.inet_addr_loopback, 8000); name = "Wombet server"; access_log; } in
   Httpev.server_lwt config answer
