@@ -26,7 +26,7 @@ let vote (id:int) (user:string) (player:int) =
   (* check if game exists and state allows voting *)
   match Hashtbl.find_opt s id with
   | None -> raise (Failure "game not found")
-  | Some game when game.state <> VotingClosed -> raise (Failure "not allowed")
+  | Some game when game.state <> VotingOpen -> raise (Failure "not allowed")
   | _ -> ();
   (* check if already voted *)
   match Hashtbl.find_opt v id with
@@ -57,7 +57,7 @@ let get_pool_prize id player =
     let pool = List.length votes in
     (* need firstly to know number of correct votes *)
     let nr_correct = List.fold_left (fun prev (_, vote) -> if vote = player then prev+1 else prev) 0 votes in
-    let prize = (float pool) /. (float nr_correct) in
+    let prize = if nr_correct <> 0 then (float pool) /. (float nr_correct) else 0. in
     prize
 
 let game_winner id =
@@ -108,9 +108,9 @@ let game id user =
   | None, Some votes -> None, List.length votes, 0.
   | Some user, Some votes ->
     let vote = List.assoc_opt user votes in
-    vote, List.length votes, (match vote with None -> 0. | Some player -> get_pool_prize id player)
+    vote, List.length votes, (match vote with None -> 0. | Some player -> -1. +. get_pool_prize id player)
   in
-  let prize = match voted, game_winner id with Some player_voted, Some player_won when player_voted = player_won -> -1. +. posprize | _ -> 0. in
+  let prize = match voted, game_winner id with Some player_voted, Some player_won when player_voted = player_won -> posprize | _ -> 0. in
   match Hashtbl.find_opt s id with
   | None -> raise (Invalid_argument ("Bad game id " ^ (string_of_int id)))
   | Some game ->
