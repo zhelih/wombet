@@ -11,31 +11,27 @@ Server start options:
 
 Server queries:
   * /add
-    * params: userA, userB, url
-    * return: game id
-    * action: add game
+    * params: players, tm, <url>
+    * return: game id TEXT
+    * action: add game with players, tournament, and URL
   * /vote
-    * params: user, id, aorb
+    * params: user, id, player
     * return: none
-    * action: vote for a player
+    * action: vote for a player as user
   * /start
     * params: id
     * return: none
     * action: stop voting ("start" game)
   * /call
-    * params: id, aorb
+    * params: id, player
     * return: none
     * action: call winner
   * /game
-    * params: id
+    * params: id, <user>
     * return: game JSON
-    * action: get game info
+    * action: get game info for a user if specified
   * /list
-    * params: none
-    * return: game list JSON
-    * action: get all games info
-  * /v2/list
-    * params: none
+    * params: <user>
     * return: game list JSON
     * action: get all games info
   * /scoreboard

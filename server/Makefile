@@ -2,7 +2,7 @@
 .PHONY: build clean opam
 
 build:
-	dune build @all
+	dune build @all && echo ""
 
 clean:
 	dune clean

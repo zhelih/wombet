@@ -1,20 +1,27 @@
 open Devkit
 
+let log = Log.from "server"
+
 let answer _ req =
   let module Arg = Httpev.Args(struct let req = req end) in
   let open Httpev.Answer in
   match req.Httpev_common.path with
   | "/add" ->
-    let userA = Arg.str "userA" in
-    let userB = Arg.str "userB" in
+    let players = Arg.array "players" in
     let url = Arg.get "url" in
-    let id = Storage.new_game userA userB url  in
-    text @@ string_of_int id
+    let tournament = Arg.get "tm" in
+    if List.length players < 2 then begin
+      log #warn "not enough players for request: %s" (Httpev_common.show_request req);
+      not_found @@ "not enough players"
+    end else begin
+      let id = Storage.new_game players tournament url  in
+      text @@ string_of_int id
+    end
   | "/vote" ->
     let user = Arg.str "user" in
     let id = Arg.int "id" in
-    let aorb = "a" = Arg.str "aorb" in
-    Storage.vote id user aorb;
+    let player = Arg.int "player" in
+    Storage.vote id user player;
     text ""
   | "/start" ->
     let id = Arg.int "id" in
@@ -23,16 +30,16 @@ let answer _ req =
   | "/call" ->
     (* id, a or b *)
     let id = Arg.int "id" in
-    let aorb = "a" = Arg.str "aorb" in
-    Storage.call id aorb;
+    let player = Arg.int "player" in
+    Storage.call id player;
     text ""
   | "/game" ->
     let id = Arg.int "id" in
-    yojson @@ Serialize.game_to_json @@ Storage.game id
+    let user = Arg.get "user" in
+    yojson @@ Common.gameton_to_yojson @@ Storage.game id user
   | "/list" ->
-    yojson @@ Serialize.gamelist_to_json @@ Storage.games_list ()
-  | "/v2/list" ->
-    yojson @@ Serialize.gamelist_to_json_v2 @@ Storage.games_list ()
+    let user = Arg.get "user" in
+    yojson @@ Common.gamelist_to_yojson @@ Storage.games_list user
   | "/scoreboard" ->
     yojson @@ Serialize.scoreboard_to_json @@ Storage.scoreboard ()
   | "/edit" ->
@@ -42,7 +49,7 @@ let answer _ req =
     text ""
   | "/stats" ->
     text @@ Storage.str_stats ()
-  | _ -> not_found "wut"
+  | _ -> not_found "unknown request"
 
 
 let () =
