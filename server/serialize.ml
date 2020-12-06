@@ -1,12 +1,9 @@
 open Yojson.Basic.Util
-open Devkit.Prelude
 
 let scoreboard_to_json data =
-  (* convert data as Array to list and add Yojson identifiers *)
-  let assoc = data |> Array.map (fun (name, score) -> `Assoc ["name", `String name; "score", `Float score ]) |> Array.to_list in
-  Yojson.Basic.to_string (`List assoc)
+  `List (data |> Array.map (fun (name, score) -> `Assoc ["name", `String name; "score", `Float score ]) |> Array.to_list)
 
-let game_to_json' (game, (cA, cB)) =
+let game_to_json (game, (cA, cB)) =
   let open Common in
   let json_progress = function
     | Allowed -> "all"
@@ -26,10 +23,8 @@ let game_to_json' (game, (cA, cB)) =
    "cB", `Float cB;
  ])
 
-let game_to_json = Yojson.Basic.to_string $ game_to_json'
-
 let gamelist_to_json (games, coefs) =
   let json_array = Array.map2 (fun (_,game) (cA, cB) ->
-    game_to_json' (game, (cA, cB))
+    game_to_json (game, (cA, cB))
   ) games coefs in
-  Yojson.Basic.to_string (`List (Array.to_list json_array))
+  `List (Array.to_list json_array)
