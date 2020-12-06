@@ -1,4 +1,8 @@
-type progress = Allowed | NotAllowed | CalledA | CalledB
+type progress =
+| Allowed [@name "all"]
+| NotAllowed [@name "notall"]
+| CalledA [@name "awon"]
+| CalledB [@name "bwon"]
 [@@deriving show, yojson { exn = true }]
 
 type game =
