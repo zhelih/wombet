@@ -54,7 +54,7 @@ class Gameboard extends React.Component {
 
     return (
 			<div>
-			<h2>Wombet Gameboard</h2>
+			<h2>Gameboard</h2>
 			{gameboard_body}
 			</div>
     );

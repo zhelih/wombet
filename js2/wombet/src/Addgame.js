@@ -65,8 +65,8 @@ class AddGame extends React.Component {
         </Form.Control.Feedback>
       </InputGroup>
       </Col>
-      <Col>
-        <Form.Label>vs.</Form.Label>
+      <Col xs={2}>
+        <Form.Label><p>vs</p></Form.Label>
       </Col>
       <Col>
       <Form.Group>
