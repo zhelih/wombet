@@ -4,12 +4,19 @@ import Gameboard from './Gameboard';
 import Scoreboard from './Scoreboard';
 import AddGame from './Addgame';
 import Wombar from './Wombar';
-import { CookiesProvider } from 'react-cookie';
+import { CookiesProvider, withCookies, Cookies } from 'react-cookie';
+import { instanceOf } from 'prop-types';
+import { COOKIEUSER } from './Api';
 
 class App extends Component {
+  static propTypes = {
+    cookies: instanceOf(Cookies).isRequired
+  };
 	constructor(props) {
-		super(props);
-		this.state = {username: null} ;
+    super(props);
+    const { cookies } = this.props;
+    let username = cookies.get(COOKIEUSER);
+    this.state = { username } ;
     this.stateHandler = this.stateHandler.bind(this);
 	}
 
@@ -20,9 +27,9 @@ class App extends Component {
   render() {
     return (
     <Router basename="/wombet">
-     <CookiesProvider>
-      <Wombar updateusername={this.stateHandler}/>
-     </CookiesProvider>
+    <CookiesProvider>
+      <Wombar updateusername={this.stateHandler} username={this.state.username}/>
+    </CookiesProvider>
       <Switch>
         <Route exact path="/">
           <Gameboard username={this.state.username} />
@@ -39,4 +46,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default withCookies(App);

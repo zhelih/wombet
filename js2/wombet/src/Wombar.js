@@ -5,11 +5,9 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { withCookies, Cookies } from 'react-cookie';
 import { instanceOf } from 'prop-types';
+import { COOKIEUSER } from './Api';
 
 import { NavLink } from "react-router-dom";
-
-const COOKIEUSER='wombetuser';
-
 
 class Wombar extends React.Component {
   static propTypes = {
@@ -18,8 +16,9 @@ class Wombar extends React.Component {
 	constructor(props) {
 		super(props);
     const { cookies } = this.props;
-		this.state = { user: cookies.get(COOKIEUSER), isLoggedIn: false } ;
+		this.state = { user: this.props.username, isLoggedIn: !!this.props.username } ;
     this.handleLogin = this.handleLogin.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
 	}
 
   handleLogin(event) {
@@ -35,8 +34,15 @@ class Wombar extends React.Component {
     }
   }
 
+  handleLogout(event) {
+      const { cookies } = this.props;
+      cookies.remove(COOKIEUSER);
+      this.setState ({ isLoggedIn : false, user: null });
+      this.props.updateusername(null); //update App username
+  }
+
   render() {
-  const loginPart = this.state.isLoggedIn ? <p>Logged as <b>{this.state.user}</b></p> : 
+  const loginPart = this.state.isLoggedIn ? <p>Logged as <b>{this.state.user}</b><Button size='sm' variant='outline-secondary' onClick={this.handleLogout}>Change</Button></p> :
         <Form inline onSubmit={this.handleLogin}>
           <Form.Control type="text" placeholder="username" className="mr-sm-2" value={this.state.user} onChange={e => this.setState({ user: e.target.value })}/>
           <Button type="submit" variant="outline-success">Login</Button>

@@ -1,2 +1,3 @@
 const API="https://wp.lykhovyd.com/api";
-export default API;
+const COOKIEUSER='wombetuser';
+export { API, COOKIEUSER };

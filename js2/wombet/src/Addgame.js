@@ -5,7 +5,7 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/Button';
-import API from './Api';
+import { API } from './Api';
 
 class AddGame extends React.Component {
 	constructor(props) {

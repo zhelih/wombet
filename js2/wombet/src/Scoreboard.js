@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Table from 'react-bootstrap/Table';
 import Spinner from 'react-bootstrap/Spinner';
 
-import API from './Api';
+import { API } from './Api';
 
 class Scoreboard extends React.Component {
 	constructor(props) {

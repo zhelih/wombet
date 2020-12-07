@@ -7,7 +7,7 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Spinner from 'react-bootstrap/Spinner';
-import API from './Api';
+import { API } from './Api';
 
 class Gamecard extends React.Component {
 	constructor(props) {
@@ -23,7 +23,7 @@ class Gamecard extends React.Component {
   }
 
   componentDidUpdate() {
-    if (this.state.needsUpdate || (this.props.username && this.props.prevUserName !== this.props.username)) {
+    if (this.state.needsUpdate || (this.props.prevUserName !== this.props.username)) {
       this.props.prevUserName = this.props.username;
       this.updateGameData()
     }

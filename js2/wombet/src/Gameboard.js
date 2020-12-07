@@ -4,7 +4,7 @@ import Gamecard from './Gamecard';
 import Button from 'react-bootstrap/Button';
 import Spinner from 'react-bootstrap/Spinner';
 import Accordion from 'react-bootstrap/Accordion';
-import API from './Api';
+import { API } from './Api';
 
 class Gameboard extends React.Component {
 	constructor(props) {
