@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Table from 'react-bootstrap/Table';
+import Spinner from 'react-bootstrap/Spinner';
 
 import API from './Api';
 
@@ -30,7 +31,7 @@ class Scoreboard extends React.Component {
 			return <p>{error.message}</p>;
 		}
 		if (isLoading) {
-			return <p>Scoreboard is loading...</p>;
+			return <Spinner animation="border" variant="primary" />;
 		}
 
 		const scoreboard_items = scoreboard.map((elem, index) =>

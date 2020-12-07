@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import Gamecard from './Gamecard';
-import Button from 'react-bootstrap/Button';
 // bootstrap imports
+import Button from 'react-bootstrap/Button';
+import Spinner from 'react-bootstrap/Spinner';
 import Accordion from 'react-bootstrap/Accordion';
 import API from './Api';
 
@@ -35,7 +36,7 @@ class Gameboard extends React.Component {
 			return <p>{error.message}</p>;
 		}
 		if (isLoading) {
-			return <p>Gameboard is loading...</p>;
+			return <Spinner animation="border" variant="primary" />;
 		}
 
    let gameboard_body = <p>No games yet.</p>
