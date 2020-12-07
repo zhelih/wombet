@@ -22,7 +22,7 @@ let new_game players tournament url =
   Hashtbl.add s id game;
   id
 
-let vote (id:int) (user:string) (player:int) =
+let vote id user player =
   (* check if game exists and state allows voting *)
   match Hashtbl.find_opt s id with
   | None -> raise (Failure "game not found")
@@ -43,11 +43,6 @@ let record_start id =
     let new_game = { game with state = VotingClosed; started = Some (Devkit.Time.now ()) } in
     Hashtbl.replace s id new_game
   | _ -> log #error "Failed to record start for game id %d" id
-
-let add_score (user:string) (prize:float) =
-  match Hashtbl.find_opt b user with
-  | None -> Hashtbl.add b user prize
-  | Some score -> Hashtbl.replace b user (score+.prize)
 
 (* helper func *)
 let get_pool_prize id player =
@@ -81,7 +76,7 @@ let update_scoreboard id player =
       Hashtbl.replace b user (score +. -1. +. prize)
     ) votes
 
-let call (id:int) (player:int) =
+let call id player =
   match Hashtbl.find_opt s id with
   | Some game when game.state = VotingClosed ->
     update_scoreboard id player;
@@ -110,7 +105,7 @@ let game id user =
     let vote = List.assoc_opt user votes in
     vote, List.length votes, (match vote with None -> 0. | Some player -> -1. +. get_pool_prize id player)
   in
-  let prize = match voted, game_winner id with Some player_voted, Some player_won when player_voted = player_won -> posprize | _ -> 0. in
+  let prize = match voted, game_winner id with Some player_voted, Some player_won when player_voted = player_won -> posprize | None, _ -> 0. | _ -> -1. in
   match Hashtbl.find_opt s id with
   | None -> raise (Invalid_argument ("Bad game id " ^ (string_of_int id)))
   | Some game ->
