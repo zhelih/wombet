@@ -112,7 +112,7 @@ class Gamecard extends React.Component {
           distribution = <span><p>Votes distribution:</p>
             <ProgressBar>
             <ProgressBar min={0} max={total} now={distr[0]} key={1} label={distr[0]} />
-            <ProgressBar min={0} max={total} variant="warning" now={distr[2]} key={1} label={distr[1]} />
+            <ProgressBar min={0} max={total} variant="warning" now={distr[1]} key={1} label={distr[1]} />
             </ProgressBar>
             </span>;
         }
@@ -137,11 +137,14 @@ class Gamecard extends React.Component {
           usersinfo=<span>{list_a}{list_b}</span>;
         }
 
-        let extra_points_info;
-        if (this.props.username) {
-          extra_points_info = <span><p>Possible prize: {game.votes.posprize}.</p><p>Points currently received: {game.votes.prize}.</p></span>;
+        if (game.game.state[0] !== "open")
+        {
+          let extra_points_info;
+          if (this.props.username) {
+            extra_points_info = <span><p>Possible prize: {game.votes.posprize}.</p><p>Points currently received: {game.votes.prize}.</p></span>;
+          }
+          prizeinfo = <span><p>Points pool is {game.votes.pool}</p>{extra_points_info}</span>;
         }
-        prizeinfo = <span><p>Points pool is {game.votes.pool}</p>{extra_points_info}</span>;
 
         if (game.game.state[0] === "open") {
           // allowed voting
