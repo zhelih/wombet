@@ -1,0 +1,18 @@
+Server TODO:
+* scoreboard per tournament
+* new query to list tournaments
+* store state to disk
+* edit game url, tournament
+
+JS TODO:
+
+* add tournament name
+* scoreboard general and scoreboard per tournament
+* tournament helper when typing
+* game data coloring: progressbar, win, points paint green for the winner
+* admin page
+* edit url and tournament (admin only)
+
+Long plans:
+* autovote for participating players
+* custom betting system
