@@ -13,8 +13,22 @@ import { API } from './Api';
 class AdminPanel extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { isLoading: false, gamekey: null, gameinfo: null, formgamekey: null, error: null} ;
+    this.state = { isLoading: false, gamekey: null, gameinfo: null, formgamekey: null, error: null, success: false} ;
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick(req) {
+    fetch(API+req+'key='+this.state.gamekey)
+    .then(response => {
+      if(response.ok) {
+        // trigger repaint
+        this.setState({ success: true })
+      } else {
+        throw new Error('Failed to fetch on click');
+      }
+    })
+    .catch(error => this.setState({error: error.message, gamekey: null, gameinfo: null}));
   }
 
   handleSubmit(event) {
@@ -22,7 +36,6 @@ class AdminPanel extends React.Component {
     event.stopPropagation();
     this.setState({ isLoading: true });
     const key = this.state.formgamekey;
-    console.log(this.state);
 
     let query = API + '/admingame?key='+key;
     fetch(query)
@@ -76,9 +89,17 @@ class AdminPanel extends React.Component {
       </div>
       );
     }
+    let success_alert;
+    if (this.state.success) {
+      success_alert = <Alert variant="success" onClose={() => this.setState({ success: false })} dismissible>Success!</Alert>;
+    }
     return (
       <div>
-      <h2>In progress</h2>
+        <Button variant="warning" onClick={() => this.handleClick('/start?')}>Close bets</Button>
+        <Button variant="success" onClick={() => this.handleClick('/call?player=0&')}>Call Left Win</Button>
+        <Button variant="success" onClick={() => this.handleClick('/call?player=1&')}>Call Right Win</Button>
+        <br />
+        {success_alert}
       </div>
     );
   }

@@ -11,15 +11,15 @@ import Alert from 'react-bootstrap/Alert';
 import { API } from './Api';
 
 class Gamecard extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = { needsUpdate: true, isLoading: false, game:null, error: null } ;
+  constructor(props) {
+    super(props);
+    this.state = { needsUpdate: true, isLoading: false, game:null, error: null } ;
     this.props.prevUsername = this.props.username;
     this.handleClick = this.handleClick.bind(this);
     this.updateGameData = this.updateGameData.bind(this);
-	}
+  }
 
-	componentDidMount() {
+  componentDidMount() {
     this.updateGameData()
   }
 
@@ -31,23 +31,23 @@ class Gamecard extends React.Component {
   }
 
   updateGameData() {
-		this.setState({ isLoading: true, needsUpdate: false });
+    this.setState({ isLoading: true, needsUpdate: false });
 
     let query=API+'/game?id='+this.props.gameid;
     if (this.props.username) {
       query = query + '&user=' + this.props.username;
     }
-		fetch(query)
-		.then(response => {
-		  if (response.ok) {
-				return response.json();
-			} else {
-				throw new Error('Failed to fetch');
-			}
-		})
-		.then(json_data => this.setState({ game: json_data, isLoading: false, needsUpdate: false }))
-		.catch(error => this.setState({ error, isLoading: false, needsUpdate:false }));
-	}
+    fetch(query)
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error('Failed to fetch');
+      }
+    })
+    .then(json_data => this.setState({ game: json_data, isLoading: false, needsUpdate: false }))
+    .catch(error => this.setState({ error, isLoading: false, needsUpdate:false }));
+  }
 
   handleClick(req) {
     if(this.props.username) {
@@ -66,7 +66,7 @@ class Gamecard extends React.Component {
     }
   }
   render() {
-		const { isLoading, game, error } = this.state;
+    const { isLoading, game, error } = this.state;
     let header;
     let body = <p>Nothing here.</p>;
     let textcn;
@@ -147,7 +147,6 @@ class Gamecard extends React.Component {
           prizeinfo = <span><p>Points pool is {game.votes.pool}</p>{extra_points_info}</span>;
         }
 
-            //<Button variant="warning" onClick={() => this.handleClick('/start?')}>Close bets</Button>
         if (game.game.state[0] === "open") {
           // allowed voting
           textcn='text-primary';
@@ -163,8 +162,6 @@ class Gamecard extends React.Component {
           textcn='text-dark';
           body = <div>
                   <p className='text-info'>Bets are closed, awaiting the end.</p>
-                  <Button variant="success" onClick={() => this.handleClick('/call?player=0&')}>Call Left Win</Button>
-                  <Button variant="success" onClick={() => this.handleClick('/call?player=1&')}>Call Right Win</Button>
                 </div>;
         } else if (game.game.state[0] === "called") {
           textcn='text-dark';
@@ -182,15 +179,15 @@ class Gamecard extends React.Component {
     }
 
     return (
-	  <Card>
-  	  <Card.Header>
-    	  <Accordion.Toggle as={Button} variant="link" eventKey={this.props.gameid+1}>
+    <Card>
+      <Card.Header>
+        <Accordion.Toggle as={Button} variant="link" eventKey={this.props.gameid+1}>
           {header}
-	      </Accordion.Toggle>
+        </Accordion.Toggle>
         {game && game.game.url ? <a className="text-right" href={game.game.url} target='blank_'>Link</a> : <noscript />}
-  	  </Card.Header>
-    	<Accordion.Collapse eventKey={this.props.gameid+1}>
-      	<Card.Body>
+      </Card.Header>
+      <Accordion.Collapse eventKey={this.props.gameid+1}>
+        <Card.Body>
         {datecreated}
         {datestarted}
         {datecalled}
@@ -200,9 +197,9 @@ class Gamecard extends React.Component {
         {prizeinfo}
         {body}
         </Card.Body>
-	    </Accordion.Collapse>
-  	</Card>
-	);
+      </Accordion.Collapse>
+    </Card>
+  );
 
   }
 }

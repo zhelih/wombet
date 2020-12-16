@@ -13,13 +13,13 @@ class Wombar extends React.Component {
   static propTypes = {
     cookies: instanceOf(Cookies).isRequired
   };
-	constructor(props) {
-		super(props);
+  constructor(props) {
+    super(props);
     const { cookies } = this.props;
-		this.state = { user: this.props.username, isLoggedIn: !!this.props.username } ;
+    this.state = { user: this.props.username, isLoggedIn: !!this.props.username } ;
     this.handleLogin = this.handleLogin.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
-	}
+  }
 
   handleLogin(event) {
     //const form = event.currentTarget;
