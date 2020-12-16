@@ -63,6 +63,7 @@ class Wombar extends React.Component {
           <Nav.Link as={NavLink} to="/">Games</Nav.Link>
           <Nav.Link as={NavLink} to="/scoreboard">Scoreboard</Nav.Link>
           <Nav.Link as={NavLink} to="/newgame">New Game</Nav.Link>
+          <Nav.Link as={NavLink} to="/admin">Admin Panel</Nav.Link>
         </Nav>
         {loginPart}
       </Navbar.Collapse>

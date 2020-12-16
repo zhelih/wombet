@@ -4,6 +4,7 @@ import Gameboard from './Gameboard';
 import Scoreboard from './Scoreboard';
 import AddGame from './Addgame';
 import Wombar from './Wombar';
+import AdminPanel from './AdminPanel';
 import { CookiesProvider, withCookies, Cookies } from 'react-cookie';
 import { instanceOf } from 'prop-types';
 import { COOKIEUSER } from './Api';
@@ -39,6 +40,9 @@ class App extends Component {
         </Route>
         <Route path="/newgame">
           <AddGame />
+        </Route>
+        <Route path="/admin">
+          <AdminPanel />
         </Route>
       </Switch>
     </Router>
