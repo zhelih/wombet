@@ -30,6 +30,10 @@ Server queries:
     * params: id, <user>
     * return: game JSON
     * action: get game info for a user if specified
+	* /admingame
+		* params: key
+		* return: game JSON
+		* action: get full game info
   * /list
     * params: <user>
     * return: game list JSON

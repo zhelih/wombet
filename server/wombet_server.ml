@@ -46,6 +46,11 @@ let answer _ req =
     let id = Arg.int "id" in
     let user = Arg.get "user" in
     yojson @@ Common.gameton_to_yojson @@ Storage.game id user
+  | "/admingame" ->
+    let key = Arg.str "key" in
+    with_key key (fun id ->
+      yojson @@ Common.gameton_to_yojson @@ Storage.game ~admin:true id None
+    )
   | "/list" ->
     let user = Arg.get "user" in
     yojson @@ Common.gamelist_to_yojson @@ Storage.games_list user

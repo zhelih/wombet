@@ -96,7 +96,7 @@ let edit_score user score =
 let str_stats () =
   Printf.sprintf "games: %d, outstanding votes: %d, scoreboard size: %d" (Hashtbl.length s) (Hashtbl.length v) (Hashtbl.length b)
 
-let game id user =
+let game id ?(admin=false) user =
   (* populatie voteinfo *)
   let (voted, pool, posprize) = match user, Hashtbl.find_opt v id with
   | _, None -> None, 0, 0.
@@ -114,8 +114,8 @@ let game id user =
     let usersinfo = Array.make (List.length game.players) [] in
     List.iter (fun (user, vote) -> usersinfo.(vote) <- user::usersinfo.(vote)) (Option.default [] @@ Hashtbl.find_opt v id);
     (*depending on game state, certain info is concealed *)
-    let (distribution, pool) = match game.state with VotingOpen -> [||], 0 | _ -> distribution, pool in
-    let usersinfo = match game.state with Called _ -> usersinfo | _ -> [||] in
+    let (distribution, pool) = match admin, game.state with false, VotingOpen -> [||], 0 | _ -> distribution, pool in
+    let usersinfo = match admin, game.state with true, _ -> usersinfo | false, Called _ -> usersinfo | _ -> [||] in
     let votes = { voted; distribution; usersinfo; pool; posprize; prize } in
     { game; votes }
 

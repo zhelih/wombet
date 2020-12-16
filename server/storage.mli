@@ -6,6 +6,6 @@ val call: int -> int -> unit
 val edit_score: string -> float -> unit
 val scoreboard: string option -> (string * float) array
 val str_stats: unit -> string
-val game: int -> string option -> Common.gameton
+val game: int -> ?admin:bool -> string option -> Common.gameton
 val games_list: string option -> Common.gamelist
 val tournaments: unit -> string list
