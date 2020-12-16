@@ -5,15 +5,16 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/Button';
+import Alert from 'react-bootstrap/Alert';
 import { API } from './Api';
 
 class AddGame extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = { validated: false, userA: null, userB: null, url: null, urlInvalid: false } ;
+  constructor(props) {
+    super(props);
+    this.state = { validated: false, userA: null, userB: null, url: null, urlInvalid: false, key: null } ;
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleUrlChange = this.handleUrlChange.bind(this);
-	}
+  }
 
   async handleSubmit(event) {
     const form = event.currentTarget;
@@ -27,19 +28,20 @@ class AddGame extends React.Component {
       if (this.state.url) {
         api_string = api_string + '&url=' + encodeURIComponent(this.state.url);
       }
-  		await fetch(api_string)
-	  	.then(response => {
-        //FIXME silent for errors
-//		    if (response.ok) {
-//  			} else {
-//	  			throw new Error('Failed to fetch');
-//		  	}
-  		})
-		  .catch(error => console.log(error));
-    //  const history = useHistory();
-//      history.push('/');
-      this.props.history.push("/");
-	  } else {
+      await fetch(api_string)
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+         } else {
+          throw new Error('Failed to fetch');
+        }
+      })
+      .then(response => {
+        this.setState({ key: response.key })
+      })
+      .catch(error => console.log(error));
+      //this.props.history.push("/");
+    } else {
       this.setState({ validated: true });
     }
   }
@@ -51,6 +53,17 @@ class AddGame extends React.Component {
   }
 
   render() {
+    if (this.state.key) {
+     return <Alert variant="success">
+       <Alert.Heading>STOP, please read below!</Alert.Heading>
+        <p className="mb-0">
+          Use Game Admin key <b>{this.state.key}</b> to stop voting, call results, etc. in the Admin Panel.
+          Store it or Admin Access will be permanently lost!
+        </p>
+        <hr />
+        <p>TODO link to admin panel with populated key</p>
+        </Alert>;
+    }
     return (
     <Form noValidate validated={this.state.validated} onSubmit={this.handleSubmit}>
       <Form.Group as={Row}>
