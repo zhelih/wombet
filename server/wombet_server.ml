@@ -2,6 +2,11 @@ open Devkit
 
 let log = Log.from "server"
 
+let with_key key f = 
+  match Auth.id_from_key key with
+  | Some id -> f id
+  | None -> Httpev.Answer.error `Forbidden "invalid key"
+
 let answer _ req =
   let module Arg = Httpev.Args(struct let req = req end) in
   let open Httpev.Answer in
@@ -14,8 +19,9 @@ let answer _ req =
       log #warn "not enough players %d" (List.length players);
       not_found @@ "not enough players"
     end else begin
-      let id = Storage.new_game players tournament url  in
-      text @@ string_of_int id
+      let id = Storage.new_game players tournament url in
+      let key = Auth.request_key id in
+      yojson @@ Common.(addinfo_to_yojson { id; key })
     end
   | "/vote" ->
     let user = Arg.str "user" in
@@ -24,15 +30,18 @@ let answer _ req =
     Storage.vote id user player;
     text ""
   | "/start" ->
-    let id = Arg.int "id" in
-    Storage.record_start id;
-    text ""
+    let key = Arg.str "key" in
+    with_key key (fun id ->
+      Storage.record_start id;
+      text ""
+    )
   | "/call" ->
-    (* id, a or b *)
-    let id = Arg.int "id" in
+    let key = Arg.str "key" in
     let player = Arg.int "player" in
-    Storage.call id player;
-    text ""
+    with_key key (fun id ->
+      Storage.call id player;
+      text ""
+    )
   | "/game" ->
     let id = Arg.int "id" in
     let user = Arg.get "user" in

@@ -42,3 +42,5 @@ type score = {
 } [@@deriving yojson]
 
 type scoreboard = score array [@@deriving yojson { exn = true } ]
+
+type addinfo = { id: int; key: string } [@@deriving yojson { exn = true } ]
