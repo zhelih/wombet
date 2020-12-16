@@ -93,6 +93,9 @@ class AdminPanel extends React.Component {
     if (this.state.success) {
       success_alert = <Alert variant="success" onClose={() => this.setState({ success: false })} dismissible>Success!</Alert>;
     }
+    const json = JSON.stringify(gameinfo, null, 2);
+    const ppjson = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    const body = <textarea className="form-control col-xs-12" readonly>{ppjson}</textarea>;
     return (
       <div>
         <Button variant="warning" onClick={() => this.handleClick('/start?')}>Close bets</Button>
@@ -100,6 +103,7 @@ class AdminPanel extends React.Component {
         <Button variant="success" onClick={() => this.handleClick('/call?player=1&')}>Call Right Win</Button>
         <br />
         {success_alert}
+        {body}
       </div>
     );
   }
