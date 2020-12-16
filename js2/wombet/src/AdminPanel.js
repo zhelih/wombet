@@ -6,14 +6,15 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import Alert from 'react-bootstrap/Alert';
+import Collapse from 'react-bootstrap/Collapse';
+import VoteList from './GameVotes';
 
-//import Spinner from 'react-bootstrap/Spinner';
 import { API } from './Api';
 
 class AdminPanel extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { isLoading: false, gamekey: null, gameinfo: null, formgamekey: null, error: null, success: false} ;
+    this.state = { isLoading: false, gamekey: null, gameinfo: null, formgamekey: null, error: null, success: false, collapsed: false} ;
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleClick = this.handleClick.bind(this);
   }
@@ -93,17 +94,29 @@ class AdminPanel extends React.Component {
     if (this.state.success) {
       success_alert = <Alert variant="success" onClose={() => this.setState({ success: false })} dismissible>Success!</Alert>;
     }
-    const json = JSON.stringify(gameinfo, null, 2);
-    const ppjson = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-    const body = <textarea className="form-control col-xs-12" readonly>{ppjson}</textarea>;
+		const votes_body = <span>
+			<Button onClick={() => this.setState({ collapsed: !this.state.collapsed })}>Votes</Button>
+			<Collapse in={this.state.collapsed}>
+				<div>
+				<VoteList game={this.state.gameinfo} />
+				</div>
+			</Collapse>
+			</span>;
+		// FIXME copy from Gamecard, better to create a separate element?
+
     return (
       <div>
+				<p>Game id : {gameinfo.game.id}</p>
+				<p>Players: {gameinfo.game.players[0]} vs {gameinfo.game.players[1]}</p>
+				<p>Tournament: {gameinfo.game.tournament}</p>
+				{votes_body}
+				<br />
         <Button variant="warning" onClick={() => this.handleClick('/start?')}>Close bets</Button>
+				<br />
         <Button variant="success" onClick={() => this.handleClick('/call?player=0&')}>Call Left Win</Button>
         <Button variant="success" onClick={() => this.handleClick('/call?player=1&')}>Call Right Win</Button>
         <br />
         {success_alert}
-        {body}
       </div>
     );
   }

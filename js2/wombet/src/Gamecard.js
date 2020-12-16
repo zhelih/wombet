@@ -5,9 +5,9 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import ProgressBar from 'react-bootstrap/ProgressBar';
-import ListGroup from 'react-bootstrap/ListGroup';
 import Spinner from 'react-bootstrap/Spinner';
 import Alert from 'react-bootstrap/Alert';
+import VoteList from './GameVotes';
 import { API } from './Api';
 
 class Gamecard extends React.Component {
@@ -74,7 +74,6 @@ class Gamecard extends React.Component {
     let datecreated, datestarted, datecalled;
     let voted;
     let distribution;
-    let usersinfo;
     let prizeinfo;
 
     if (error) {
@@ -116,26 +115,6 @@ class Gamecard extends React.Component {
             <ProgressBar min={0} max={total} variant="warning" now={distr[1]} key={1} label={distr[1]} />
             </ProgressBar>
             </span>;
-        }
-
-        if (game.votes.usersinfo && game.votes.usersinfo.length > 0) {
-          const voted_a = game.votes.usersinfo[0];
-          const voted_b = game.votes.usersinfo[1];
-          let list_a;
-          let list_b;
-          if (voted_a.length > 0) {
-            const inside_list_a = voted_a.map(user => <ListGroup.Item>{user}</ListGroup.Item>);
-            list_a = <span><p>Voted for {game.game.players[0]}:</p><ListGroup>{inside_list_a}</ListGroup></span>;
-          } else {
-            list_a = <span><p>No one voted for {game.game.players[0]}.</p></span>
-          }
-          if (voted_b.length > 0) {
-            const inside_list_b = voted_b.map(user => <ListGroup.Item>{user}</ListGroup.Item>);
-            list_b = <span><p>Voted for {game.game.players[1]}:</p><ListGroup>{inside_list_b}</ListGroup></span>;
-          } else {
-            list_b = <span><p>No one voted for {game.game.players[1]}.</p></span>
-          }
-          usersinfo=<span>{list_a}{list_b}</span>;
         }
 
         if (game.game.state[0] !== "open")
@@ -193,7 +172,7 @@ class Gamecard extends React.Component {
         {datecalled}
         {voted}
         {distribution}
-        {usersinfo}
+        <VoteList game={game} />
         {prizeinfo}
         {body}
         </Card.Body>
