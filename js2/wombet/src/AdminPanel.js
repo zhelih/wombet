@@ -13,19 +13,32 @@ import { API } from './Api';
 class AdminPanel extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { isLoading: false, gameid: null, gameinfo: null, formgameid: null, error: null} ;
+    this.state = { isLoading: false, gamekey: null, gameinfo: null, formgamekey: null, error: null} ;
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleSubmit(e) {
+  handleSubmit(event) {
     event.preventDefault();
     event.stopPropagation();
     this.setState({ isLoading: true });
-    //TODO
+    const key = this.state.formgamekey;
+    console.log(this.state);
+
+    let query = API + '/admingame?key='+key;
+    fetch(query)
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error('Failed to receive admin rights with key '+key+'.');
+      }
+    })
+    .then(json_data => this.setState({ gameinfo: json_data, isLoading: false, gamekey: key }))
+    .catch(error => this.setState({ error: error.message, isLoading: false, gamekey: null, gameinfo: null }));
   }
 
   render() {
-    const { isLoading, gameid, gameinfo, error, formgameid } = this.state;
+    const { isLoading, gamekey, gameinfo, error, formgamekey } = this.state;
     if (isLoading) {
       return <Spinner animation="border" variant="primary" />;
     }
@@ -35,7 +48,7 @@ class AdminPanel extends React.Component {
       error_alert = <Alert variant="danger" onClose={() => this.setState({ error: null })} dismissible>{error}</Alert>;
     }
 
-    if (!gameid) {
+    if (!gamekey) {
       return (
       <div>
       <Form onSubmit={this.handleSubmit}>
@@ -43,12 +56,13 @@ class AdminPanel extends React.Component {
         <Col xs="auto">
           <InputGroup className="mb-3">
             <InputGroup.Prepend>
-              <InputGroup.Text id="admin-key1" value={formgameid} onChange={e => this.setState({ formgameid: e.target.value})}>Admin Key</InputGroup.Text>
+              <InputGroup.Text id="admin-key1" >Admin Key</InputGroup.Text>
             </InputGroup.Prepend>
             <Form.Control
               placeholder="Enter here"
               aria-label="Game Admin Key"
               aria-describedby="admin-key1"
+              required value={formgamekey} onChange={e => this.setState({ formgamekey: e.target.value})}
             />
           </InputGroup>
         </Col>

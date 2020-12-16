@@ -7,6 +7,7 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Spinner from 'react-bootstrap/Spinner';
+import Alert from 'react-bootstrap/Alert';
 import { API } from './Api';
 
 class Gamecard extends React.Component {
@@ -146,14 +147,18 @@ class Gamecard extends React.Component {
           prizeinfo = <span><p>Points pool is {game.votes.pool}</p>{extra_points_info}</span>;
         }
 
+            //<Button variant="warning" onClick={() => this.handleClick('/start?')}>Close bets</Button>
         if (game.game.state[0] === "open") {
           // allowed voting
           textcn='text-primary';
-          body = <ButtonGroup>
-            <Button variant="primary" disabled={!this.props.username} onClick={() => this.handleClick('/vote?player=0&')}>Vote left</Button>
-            <Button variant="primary" disabled={!this.props.username} onClick={() => this.handleClick('/vote?player=1&')}>Vote right</Button>
-            <Button variant="warning" onClick={() => this.handleClick('/start?')}>Close bets</Button>
-          </ButtonGroup>;
+          if (this.props.username) {
+            body = <ButtonGroup>
+              <Button variant="primary" onClick={() => this.handleClick('/vote?player=0&')}>Vote left</Button>
+              <Button variant="primary" onClick={() => this.handleClick('/vote?player=1&')}>Vote right</Button>
+            </ButtonGroup>;
+          } else {
+            body = <Alert variant="warning">Please log in to vote.</Alert>;
+          }
         } else if (game.game.state[0] === "closed") {
           textcn='text-dark';
           body = <div>
@@ -186,7 +191,6 @@ class Gamecard extends React.Component {
   	  </Card.Header>
     	<Accordion.Collapse eventKey={this.props.gameid+1}>
       	<Card.Body>
-        <p>Debug: current user is {this.props.username}.</p><br/>
         {datecreated}
         {datestarted}
         {datecalled}

@@ -50,7 +50,7 @@ class Wombar extends React.Component {
 
   // use as NavLink with Nav.Link to work correctly with Router
   return (
-    <Navbar bg="light" expand="lg">
+    <Navbar bg="light" expand="lg" collapseOnSelect>
       <Navbar.Brand as={NavLink} to="/">
         <img src="./wombet_logo.png"
         width="30" height="30" className="d-inline-block align-top"
@@ -60,10 +60,10 @@ class Wombar extends React.Component {
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto">
-          <Nav.Link as={NavLink} to="/">Games</Nav.Link>
-          <Nav.Link as={NavLink} to="/scoreboard">Scoreboard</Nav.Link>
-          <Nav.Link as={NavLink} to="/newgame">New Game</Nav.Link>
-          <Nav.Link as={NavLink} to="/admin">Admin Panel</Nav.Link>
+          <Nav.Link eventKey="1" as={NavLink} to="/">Games</Nav.Link>
+          <Nav.Link eventKey="2" as={NavLink} to="/scoreboard">Scoreboard</Nav.Link>
+          <Nav.Link eventKey="3" as={NavLink} to="/newgame">New Game</Nav.Link>
+          <Nav.Link eventKey="4" as={NavLink} to="/admin">Admin Panel</Nav.Link>
         </Nav>
         {loginPart}
       </Navbar.Collapse>
