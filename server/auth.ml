@@ -24,3 +24,6 @@ let request_key id =
   loop ()
 
 let id_from_key key = Hashtbl.find_opt h_games key
+
+let list_keys () =
+  h_games |> Hashtbl.to_seq |> List.of_seq

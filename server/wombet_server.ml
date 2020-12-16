@@ -60,6 +60,10 @@ let answer _ req =
     let score = Arg.float "score" in
     Storage.edit_score user score;
     text ""
+  (* fallback to unknown request if pid param in incorrect *)
+  | "/list_keys" when Arg.get "pid" = Some (string_of_int @@ Unix.getpid ()) ->
+    let res = List.map (fun (key, id) -> Printf.sprintf "%d: %s" id key) @@ Auth.list_keys () in
+    text @@ String.concat "\n" res
   | "/stats" ->
     text @@ Storage.str_stats ()
   | _ -> not_found "unknown request"
