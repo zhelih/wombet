@@ -85,7 +85,7 @@ let call id player =
   | _ -> log #error "Failed to call game id %d" id
 
 (*TODO per tournament and global *)
-let scoreboard () =
+let scoreboard _tournament =
   let data = Array.of_seq @@ Hashtbl.to_seq b in
   Array.sort (fun (_, score1) (_, score2) -> -compare score1 score2) data;
   data
@@ -125,3 +125,6 @@ let games_list user =
   let games = s |> Hashtbl.to_seq_keys |> Seq.map (fun id -> game id user) |> Array.of_seq in
   Array.sort (fun g1 g2 -> -compare g1.game.created g2.game.created) games;
   games
+
+(*TODO*)
+let tournaments () = []

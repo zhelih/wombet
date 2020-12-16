@@ -41,7 +41,11 @@ let answer _ req =
     let user = Arg.get "user" in
     yojson @@ Common.gamelist_to_yojson @@ Storage.games_list user
   | "/scoreboard" ->
-    yojson @@ Serialize.scoreboard_to_json @@ Storage.scoreboard ()
+    let tm = Arg.get "tournament" in
+    yojson @@ Serialize.scoreboard_to_json @@ Storage.scoreboard tm
+  | "/tournaments" ->
+    let serialize l = `List (List.map (fun t -> `String t) l) in
+    yojson @@ serialize @@ Storage.tournaments ()
   | "/edit" ->
     let user = Arg.str "user" in
     let score = Arg.float "score" in
