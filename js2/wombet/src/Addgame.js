@@ -6,14 +6,17 @@ import Row from 'react-bootstrap/Row';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
 import { API } from './Api';
 
 class AddGame extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { validated: false, userA: null, userB: null, url: null, urlInvalid: false, key: null } ;
+    this.state = { validated: false, userA: null, userB: null, url: null, urlInvalid: false, key: null, tms: null, tm: null } ;
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleUrlChange = this.handleUrlChange.bind(this);
+    this.handleTmSelection = this.handleTmSelection.bind(this);
   }
 
   async handleSubmit(event) {
@@ -27,6 +30,9 @@ class AddGame extends React.Component {
       let api_string = API+'/add?players[]='+this.state.userA+'&players[]='+this.state.userB;
       if (this.state.url) {
         api_string = api_string + '&url=' + encodeURIComponent(this.state.url);
+      }
+      if (this.state.tm) {
+        api_string = api_string + '&tm=' + encodeURIComponent(this.state.tm);
       }
       await fetch(api_string)
       .then(response => {
@@ -46,10 +52,29 @@ class AddGame extends React.Component {
     }
   }
 
+  componentDidMount() {
+    let query = API + '/tournaments';
+    fetch(query)
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error('Failed to fetch');
+      }
+    })
+    .then(json_data => this.setState({ tms: json_data }))
+    .catch(error => console.log(error));
+  }
+
   handleUrlChange(e) {
     const urltext = e.target.value;
     const valid = !urltext || urltext.startsWith("http://") || urltext.startsWith("https://");
     this.setState({ url: urltext, urlInvalid: !valid})
+  }
+
+  handleTmSelection(eventKey, event) {
+    const tm_name = this.state.tms[eventKey];
+    this.setState({ tm: tm_name });
   }
 
   render() {
@@ -64,6 +89,9 @@ class AddGame extends React.Component {
         <p>TODO link to admin panel with populated key</p>
         </Alert>;
     }
+
+    const tms_drop = this.state.tms ? this.state.tms.map((tm, index) => <Dropdown.Item eventKey={index} onSelect={this.handleTmSelection}>{tm}</Dropdown.Item>) : <noscript />;
+
     return (
     <Form noValidate validated={this.state.validated} onSubmit={this.handleSubmit}>
       <Form.Group as={Row}>
@@ -103,6 +131,13 @@ class AddGame extends React.Component {
         <Form.Control.Feedback>
           Looks good!
         </Form.Control.Feedback>
+      </Form.Group>
+      <Form.Group>
+        <Form.Label>Tournament</Form.Label>
+        <Form.Control type="text" placeholder="optional" value={this.state.tm} onChange={e => this.setState({ tm: e.target.value})} />
+        <DropdownButton title="Choose">
+          {tms_drop}
+        </DropdownButton>
       </Form.Group>
       <Button variant="primary" type="submit">Add Game</Button>
     </Form>
