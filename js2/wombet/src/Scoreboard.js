@@ -45,7 +45,7 @@ class Scoreboard extends React.Component {
     let scoreboard_body = <p>Scoreboard is empty.</p>
     if (scoreboard) {
       if (scoreboard.length > 0) {
-        scoreboard_body = <Table striped bordered hover>
+        scoreboard_body = <Table striped bordered>
         <thead><tr>
           <th>#</th>
           <th>User</th>
