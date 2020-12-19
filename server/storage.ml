@@ -32,10 +32,9 @@ let vote id user player =
   match Hashtbl.find_opt v id with
   | None -> Hashtbl.add v id [ user, player ]
   | Some votes ->
-    (*TODO replace *)
-    if not @@ List.mem_assoc user votes then
-      Hashtbl.replace v id ((user, player)::votes); (* silently ignore hehe *)
-      ()
+    let votes = if List.mem_assoc user votes then List.remove_assoc user votes else votes in
+    Hashtbl.replace v id ((user, player)::votes);
+    ()
 
 let record_start id =
   match Hashtbl.find_opt s id with
