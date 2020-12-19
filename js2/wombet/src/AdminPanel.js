@@ -54,7 +54,7 @@ class AdminPanel extends React.Component {
 
   handleURLedit() {
     const key = this.state.gamekey;
-    const url = this.state.url ? encodeURIComponent(this.state.gameurl) : "";
+    const url = this.state.gameurl ? encodeURIComponent(this.state.gameurl) : "";
     fetch(API+'/editurl?key='+key+'&url='+url)
     .then(response => {
       if(response.ok) {
