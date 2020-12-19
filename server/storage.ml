@@ -122,9 +122,19 @@ let game id ?(admin=false) user =
 (* return the list of games together with coefficients, sort by creation date *)
 (*TODO impose a limit? *)
 let games_list user =
-  let games = s |> Hashtbl.to_seq_keys |> Seq.map (fun id -> game id user) |> Array.of_seq in
+  let games = s |> Hashtbl.to_seq_keys |> Seq.map (fun id -> game id user) |> Seq.filter (fun game -> game.game.state <> Annulled) |> Array.of_seq in
   Array.sort (fun g1 g2 -> -compare g1.game.created g2.game.created) games;
   games
 
 (*TODO*)
-let tournaments () = []
+let tournaments () = [ "Tm 1"; "Tm 2"; "Tm 3" ]
+
+let remove id =
+  match Hashtbl.find_opt s id with
+  | None -> ()
+  | Some game -> Hashtbl.replace s id { game with state = Annulled; }
+
+let replace_url id url =
+  match Hashtbl.find_opt s id with
+  | None -> raise (Failure "game not found")
+  | Some game -> Hashtbl.replace s id { game with url = Some url; }

@@ -2,6 +2,7 @@ type progress =
 | VotingOpen [@name "open"]
 | VotingClosed [@name "closed"]
 | Called of int [@name "called"]
+| Annulled [@name "annulled"]
 [@@deriving show, yojson { exn = true }]
 
 (* game info type. voting info is stored separately *)

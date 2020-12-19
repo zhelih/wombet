@@ -51,6 +51,19 @@ let answer _ req =
     with_key key (fun id ->
       yojson @@ Common.gameton_to_yojson @@ Storage.game ~admin:true id None
     )
+  | "/remove" ->
+    let key = Arg.str "key" in
+    with_key key (fun id ->
+      Storage.remove id;
+      text ""
+    )
+  | "/editurl" ->
+    let key = Arg.str "key" in
+    let url = Arg.str "url" in
+    with_key key (fun id ->
+      Storage.replace_url id url;
+      text ""
+    )
   | "/list" ->
     let user = Arg.get "user" in
     yojson @@ Common.gamelist_to_yojson @@ Storage.games_list user

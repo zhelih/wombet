@@ -9,3 +9,5 @@ val str_stats: unit -> string
 val game: int -> ?admin:bool -> string option -> Common.gameton
 val games_list: string option -> Common.gamelist
 val tournaments: unit -> string list
+val remove: int -> unit
+val replace_url: int -> string -> unit
