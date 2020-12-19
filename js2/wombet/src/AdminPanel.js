@@ -18,6 +18,7 @@ class AdminPanel extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleURLedit = this.handleURLedit.bind(this);
+    this.handleRemove = this.handleRemove.bind(this);
   }
 
   handleClick(req) {
@@ -51,6 +52,19 @@ class AdminPanel extends React.Component {
     .then(json_data => this.setState({ gameinfo: json_data, isLoading: false, gamekey: key }))
     .catch(error => this.setState({ error: error.message, isLoading: false, gamekey: null, gameinfo: null }));
   }
+
+  handleRemove() {
+    fetch(API+'/remove?key='+this.state.gamekey)
+    .then(response => {
+      if(response.ok) {
+        // trigger repaint
+        this.setState({ success: true })
+      } else {
+        throw new Error('Failed to fetch on click');
+      }
+    })
+    .catch(error => this.setState({error: error.message, gamekey: null, gameinfo: null}));
+	}
 
   handleURLedit() {
     const key = this.state.gamekey;
@@ -148,6 +162,8 @@ class AdminPanel extends React.Component {
         <br />
         <Button variant="success" onClick={() => this.handleClick('/call?player=0&')}>Call Left Win</Button>
         <Button variant="success" onClick={() => this.handleClick('/call?player=1&')}>Call Right Win</Button>
+        <br />
+        <Button variant="danger" onClick={this.handleRemove}>Remove Game</Button>
         <br />
         {votes_body}
         {success_alert}
