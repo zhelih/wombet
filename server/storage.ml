@@ -137,4 +137,6 @@ let remove id =
 let replace_url id url =
   match Hashtbl.find_opt s id with
   | None -> raise (Failure "game not found")
-  | Some game -> Hashtbl.replace s id { game with url = Some url; }
+  | Some game ->
+    let url = if url = "" then None else Some url in
+    Hashtbl.replace s id { game with url; }
