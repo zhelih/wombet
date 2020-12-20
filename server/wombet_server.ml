@@ -1,5 +1,7 @@
 open Devkit
 
+module Export = Storage.Export
+
 let log = Log.from "server"
 
 let with_key key f =
@@ -45,11 +47,11 @@ let answer _ req =
   | "/game" ->
     let id = Arg.int "id" in
     let user = Arg.get "user" in
-    yojson @@ Shared.gameton_to_yojson @@ Storage.game id user
+    yojson @@ Shared.gameton_to_yojson @@ Export.game id user
   | "/admingame" ->
     let key = Arg.str "key" in
     with_key key (fun id ->
-      yojson @@ Shared.gameton_to_yojson @@ Storage.game ~admin:true id None
+      yojson @@ Shared.gameton_to_yojson @@ Export.game ~admin:true id None
     )
   | "/remove" ->
     let key = Arg.str "key" in
@@ -66,13 +68,13 @@ let answer _ req =
     )
   | "/list" ->
     let user = Arg.get "user" in
-    yojson @@ Shared.gamelist_to_yojson @@ Storage.games_list user
+    yojson @@ Shared.gamelist_to_yojson @@ Export.games_list user
   | "/scoreboard" ->
     let tm = Arg.get "tournament" in
-    yojson @@ Shared.scoreboard_to_yojson @@ Storage.scoreboard tm
+    yojson @@ Shared.scoreboard_to_yojson @@ Export.scoreboard tm
   | "/tournaments" ->
     let serialize l = `List (List.map (fun t -> `String t) l) in
-    yojson @@ serialize @@ Storage.tournaments ()
+    yojson @@ serialize @@ Export.tournaments ()
   | "/edit" ->
     let user = Arg.str "user" in
     let score = Arg.float "score" in
