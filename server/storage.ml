@@ -1,6 +1,7 @@
-open Common
+open Devkit
+open Shared
 
-let log = Devkit.Log.from "storage"
+let log = Log.from "storage"
 
 let s = Hashtbl.create 1 (* mem storage for games *)
 let v = Hashtbl.create 1 (* mem storage for votes *)
@@ -8,14 +9,13 @@ let b = Hashtbl.create 1 (* mem storage for scoreboard *)
 
 let new_game players tournament url =
   let id = Hashtbl.length s in
-  let created = Devkit.Time.now () in
   let game = {
     state = VotingOpen;
     id;
     players;
     url;
     tournament;
-    created;
+    created = Time.now ();
     started = None;
     called = None
   } in
@@ -39,7 +39,7 @@ let vote id user player =
 let record_start id =
   match Hashtbl.find_opt s id with
   | Some game when game.state = VotingOpen ->
-    let new_game = { game with state = VotingClosed; started = Some (Devkit.Time.now ()) } in
+    let new_game = { game with state = VotingClosed; started = Some (Time.now ()) } in
     Hashtbl.replace s id new_game
   | _ -> log #error "Failed to record start for game id %d" id
 
@@ -79,7 +79,7 @@ let call id player =
   match Hashtbl.find_opt s id with
   | Some game when game.state = VotingClosed ->
     update_scoreboard id player;
-    let new_game = { game with state = (Called player); called = Some (Devkit.Time.now ()) } in
+    let new_game = { game with state = (Called player); called = Some (Time.now ()) } in
     Hashtbl.replace s id new_game
   | _ -> log #error "Failed to call game id %d" id
 
@@ -87,7 +87,7 @@ let call id player =
 let scoreboard _tournament =
   let data = Array.of_seq @@ Hashtbl.to_seq b in
   Array.sort (fun (_, score1) (_, score2) -> -compare score1 score2) data;
-  data
+  data |> Array.map (fun (name, score) -> { name; score })
 
 let edit_score user score =
   if score = 0.0 then Hashtbl.remove b user else Hashtbl.replace b user score

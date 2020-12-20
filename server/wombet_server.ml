@@ -2,7 +2,7 @@ open Devkit
 
 let log = Log.from "server"
 
-let with_key key f = 
+let with_key key f =
   match Auth.id_from_key key with
   | Some id -> f id
   | None -> Httpev.Answer.error `Forbidden "invalid key"
@@ -21,7 +21,7 @@ let answer _ req =
     end else begin
       let id = Storage.new_game players tournament url in
       let key = Auth.request_key id in
-      yojson @@ Common.(addinfo_to_yojson { id; key })
+      yojson @@ Shared.(addinfo_to_yojson { id; key })
     end
   | "/vote" ->
     let user = Arg.str "user" in
@@ -45,11 +45,11 @@ let answer _ req =
   | "/game" ->
     let id = Arg.int "id" in
     let user = Arg.get "user" in
-    yojson @@ Common.gameton_to_yojson @@ Storage.game id user
+    yojson @@ Shared.gameton_to_yojson @@ Storage.game id user
   | "/admingame" ->
     let key = Arg.str "key" in
     with_key key (fun id ->
-      yojson @@ Common.gameton_to_yojson @@ Storage.game ~admin:true id None
+      yojson @@ Shared.gameton_to_yojson @@ Storage.game ~admin:true id None
     )
   | "/remove" ->
     let key = Arg.str "key" in
@@ -66,10 +66,10 @@ let answer _ req =
     )
   | "/list" ->
     let user = Arg.get "user" in
-    yojson @@ Common.gamelist_to_yojson @@ Storage.games_list user
+    yojson @@ Shared.gamelist_to_yojson @@ Storage.games_list user
   | "/scoreboard" ->
     let tm = Arg.get "tournament" in
-    yojson @@ Serialize.scoreboard_to_json @@ Storage.scoreboard tm
+    yojson @@ Shared.scoreboard_to_yojson @@ Storage.scoreboard tm
   | "/tournaments" ->
     let serialize l = `List (List.map (fun t -> `String t) l) in
     yojson @@ serialize @@ Storage.tournaments ()
