@@ -8,6 +8,7 @@ import Col from 'react-bootstrap/Col';
 import Alert from 'react-bootstrap/Alert';
 import Collapse from 'react-bootstrap/Collapse';
 import VoteList from './GameVotes';
+import { withRouter } from 'react-router-dom';
 
 import { API } from './Api';
 
@@ -19,6 +20,19 @@ class AdminPanel extends React.Component {
     this.handleClick = this.handleClick.bind(this);
     this.handleURLedit = this.handleURLedit.bind(this);
     this.handleRemove = this.handleRemove.bind(this);
+    this.loadAdmin = this.loadAdmin.bind(this);
+  }
+
+  componentDidMount() {
+    const search = this.props.location.search;
+    const params = new URLSearchParams(search);
+    if (params.has('key')) {
+      const key = params.get('key');
+      if (key.length > 0)
+      {
+        this.loadAdmin(key);
+      }
+    }
   }
 
   handleClick(req) {
@@ -35,11 +49,16 @@ class AdminPanel extends React.Component {
   }
 
   handleSubmit(event) {
-    event.preventDefault();
-    event.stopPropagation();
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
     this.setState({ isLoading: true });
     const key = this.state.formgamekey;
+    this.loadAdmin(key);
+  }
 
+  loadAdmin(key) {
     let query = API + '/admingame?key='+key;
     fetch(query)
     .then(response => {
@@ -64,7 +83,7 @@ class AdminPanel extends React.Component {
       }
     })
     .catch(error => this.setState({error: error.message, gamekey: null, gameinfo: null}));
-	}
+  }
 
   handleURLedit() {
     const key = this.state.gamekey;
@@ -156,7 +175,7 @@ class AdminPanel extends React.Component {
               onClick={this.handleURLedit}>
             Edit</Button>
           </InputGroup.Append>
-        </InputGroup> 
+        </InputGroup>
         <br />
         <Button variant="warning" onClick={() => this.handleClick('/start?')}>Close bets</Button>
         <br />
@@ -172,4 +191,4 @@ class AdminPanel extends React.Component {
   }
 }
 
-export default AdminPanel;
+export default withRouter(AdminPanel);

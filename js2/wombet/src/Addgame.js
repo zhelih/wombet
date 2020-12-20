@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom'
+import { withRouter, Link } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
@@ -79,14 +79,15 @@ class AddGame extends React.Component {
 
   render() {
     if (this.state.key) {
-     return <Alert variant="success">
-       <Alert.Heading>STOP, please read below!</Alert.Heading>
+      const link = "/admin?key=" + this.state.key;
+      return <Alert variant="success">
+        <Alert.Heading>STOP, please read below!</Alert.Heading>
         <p className="mb-0">
           Use Game Admin key <b>{this.state.key}</b> to stop voting, call results, etc. in the Admin Panel.
           Store it or Admin Access will be permanently lost!
         </p>
         <hr />
-        <p>TODO link to admin panel with populated key</p>
+        <p>Link to admin panel: <Link to={link}>link</Link>.</p>
         </Alert>;
     }
 
